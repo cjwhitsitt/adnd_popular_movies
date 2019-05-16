@@ -10,6 +10,8 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 
+import com.jaywhitsitt.popularmovies.data.Movie;
+import com.jaywhitsitt.popularmovies.utilities.MovieJsonUtils;
 import com.jaywhitsitt.popularmovies.utilities.NetworkUtils;
 
 import java.io.IOException;
@@ -19,8 +21,6 @@ public class MainActivity extends AppCompatActivity {
 
     RecyclerView mRecyclerView;
     MovieAdapter mMovieAdapter;
-
-    String mData;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,14 +43,18 @@ public class MainActivity extends AppCompatActivity {
         new FetchMoviesTask().execute();
     }
 
-    public class FetchMoviesTask extends AsyncTask<Void, Void, String> {
+    public class FetchMoviesTask extends AsyncTask<Void, Void, Movie[]> {
+
+        private final String TAG = FetchMoviesTask.class.getSimpleName();
 
         @Override
-        protected String doInBackground(Void... voids) {
+        protected Movie[] doInBackground(Void... voids) {
             URL url = NetworkUtils.urlForMostPopularMovies();
             try {
-                String data = NetworkUtils.getResponseFromHttpUrl(url);
-                return data;
+                String jsonString = NetworkUtils.getResponseFromHttpUrl(url);
+                Log.i(TAG, jsonString == null ? "null" : jsonString);
+                Movie[] movies = MovieJsonUtils.moviesFromJson(jsonString);
+                return movies;
 
             } catch (IOException e) {
                 e.printStackTrace();
@@ -59,9 +63,8 @@ public class MainActivity extends AppCompatActivity {
         }
 
         @Override
-        protected void onPostExecute(String s) {
-            mData = s;
-            Log.i("FetchMoviesTask", s == null ? "null" : s);
+        protected void onPostExecute(Movie[] movies) {
+            mMovieAdapter.setData(movies);
         }
 
     }

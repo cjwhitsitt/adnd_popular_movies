@@ -1,6 +1,7 @@
 package com.jaywhitsitt.popularmovies.utilities;
 
 import android.net.Uri;
+import android.util.Log;
 
 import com.jaywhitsitt.popularmovies.BuildConfig;
 
@@ -13,11 +14,19 @@ import java.util.Scanner;
 
 public class NetworkUtils {
 
+    final static private String TAG = NetworkUtils.class.getSimpleName();
+
     final static private String apiBase = "https://api.themoviedb.org/3/";
     final static private String imageBase = "https://image.tmdb.org/t/p/";
 
     public static URL urlForMostPopularMovies() {
         return urlWithPath("popular");
+    }
+
+    public static String urlStringForPosterImage(String path) {
+        String url = imageBase + "/w185" + path;
+        Log.d(TAG, "poster url = " + url);
+        return url;
     }
 
     private static URL urlWithPath(String path) {
@@ -28,7 +37,9 @@ public class NetworkUtils {
                 .build();
 
         try {
-            return new URL(uri.toString());
+            String url = uri.toString();
+            Log.d(TAG, "url = " + url);
+            return new URL(url);
         } catch (MalformedURLException e) {
             e.printStackTrace();
             return null;

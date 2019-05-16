@@ -8,9 +8,18 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
+import com.jaywhitsitt.popularmovies.data.Movie;
+import com.jaywhitsitt.popularmovies.utilities.NetworkUtils;
 import com.squareup.picasso.Picasso;
 
 public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieAdapterViewHolder> {
+
+    private Movie[] mMovies;
+
+    public void setData(Movie[] movies) {
+        mMovies = movies;
+        notifyDataSetChanged();
+    }
 
     @NonNull
     @Override
@@ -24,15 +33,17 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieAdapter
     @Override
     public void onBindViewHolder(@NonNull MovieAdapterViewHolder movieAdapterViewHolder, int i) {
         ImageView imageView = movieAdapterViewHolder.mImageView;
+        Movie movie = mMovies[i];
         Picasso.get()
-                .load("https://image.tmdb.org/t/p/w185/nBNZadXqJSdt05SHLqgT0HuC5Gm.jpg")
+                .load(NetworkUtils.urlStringForPosterImage(movie.imageUrl))
+                .placeholder(R.drawable.ic_ellipses)
                 .error(R.drawable.ic_error_cloud)
                 .into(imageView);
     }
 
     @Override
     public int getItemCount() {
-        return 10;
+        return mMovies == null ? 0 : mMovies.length;
     }
 
     public class MovieAdapterViewHolder extends RecyclerView.ViewHolder {

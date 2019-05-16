@@ -9,6 +9,8 @@ import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 
 import com.jaywhitsitt.popularmovies.data.Movie;
 import com.jaywhitsitt.popularmovies.utilities.MovieJsonUtils;
@@ -21,6 +23,9 @@ public class MainActivity extends AppCompatActivity {
 
     RecyclerView mRecyclerView;
     MovieAdapter mMovieAdapter;
+
+    private static final String SORT_BY_POPULAR = "POPULAR";
+    private static final String SORT_BY_TOP_RATED = "TOP_RATED";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,20 +41,31 @@ public class MainActivity extends AppCompatActivity {
         mMovieAdapter = new MovieAdapter();
         mRecyclerView.setAdapter(mMovieAdapter);
 
-        loadData();
+        loadData(SORT_BY_POPULAR);
     }
 
-    private void loadData() {
-        new FetchMoviesTask().execute();
+    private void loadData(String sortSelection) {
+        new FetchMoviesTask().execute(sortSelection);
     }
 
-    public class FetchMoviesTask extends AsyncTask<Void, Void, Movie[]> {
+    public class FetchMoviesTask extends AsyncTask<String, Void, Movie[]> {
 
         private final String TAG = FetchMoviesTask.class.getSimpleName();
 
         @Override
-        protected Movie[] doInBackground(Void... voids) {
-            URL url = NetworkUtils.urlForMostPopularMovies();
+        protected Movie[] doInBackground(String... strings) {
+            String selection = strings.length > 0 && strings[0] != null ? strings[0] : SORT_BY_POPULAR;
+
+            URL url;
+            if (selection == SORT_BY_POPULAR) {
+                url = NetworkUtils.urlForMostPopularMovies();
+            } else if (selection == SORT_BY_TOP_RATED) {
+                url = NetworkUtils.urlForTopRatedMovies();
+            } else {
+                Log.e(TAG, "Invalid sorting selection " + String.valueOf(selection));
+                return null;
+            }
+
             try {
                 String jsonString = NetworkUtils.getResponseFromHttpUrl(url);
                 Log.i(TAG, jsonString == null ? "null" : jsonString);
@@ -69,4 +85,22 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.main, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == R.id.action_sort_popular) {
+            loadData(SORT_BY_POPULAR);
+            return true;
+        }
+        if (item.getItemId() == R.id.action_sort_top_rated) {
+            loadData(SORT_BY_TOP_RATED);
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
 }

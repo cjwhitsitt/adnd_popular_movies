@@ -23,6 +23,10 @@ public class NetworkUtils {
         return urlWithPath("popular");
     }
 
+    public static URL urlForTopRatedMovies() {
+        return urlWithPath("top_rated");
+    }
+
     public static String urlStringForPosterImage(String path) {
         String url = imageBase + "/w185" + path;
         Log.d(TAG, "poster url = " + url);

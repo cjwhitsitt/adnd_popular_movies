@@ -28,7 +28,7 @@ public class NetworkUtils {
     }
 
     public static String urlStringForPosterImage(String path) {
-        String url = imageBase + "/w185" + path;
+        String url = imageBase + "w185" + path; // TODO: adjust for screen size
         Log.d(TAG, "poster url = " + url);
         return url;
     }

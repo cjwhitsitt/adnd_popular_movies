@@ -8,24 +8,24 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
-import com.jaywhitsitt.popularmovies.data.Movie;
+import com.jaywhitsitt.popularmovies.data.MovieBase;
 import com.jaywhitsitt.popularmovies.utilities.NetworkUtils;
 import com.squareup.picasso.Picasso;
 
 interface MovieOnClickHandler {
-    void onClick(Movie movie);
+    void onClick(MovieBase movie);
 }
 
 public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieAdapterViewHolder> {
 
-    private Movie[] mMovies;
+    private MovieBase[] mMovies;
     private MovieOnClickHandler mOnClickHandler;
 
     public MovieAdapter(MovieOnClickHandler onClickHandler) {
         mOnClickHandler = onClickHandler;
     }
 
-    public void setData(Movie[] movies) {
+    public void setData(MovieBase[] movies) {
         mMovies = movies;
         notifyDataSetChanged();
     }
@@ -42,7 +42,7 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieAdapter
     @Override
     public void onBindViewHolder(@NonNull MovieAdapterViewHolder movieAdapterViewHolder, int i) {
         ImageView imageView = movieAdapterViewHolder.mImageView;
-        Movie movie = mMovies[i];
+        MovieBase movie = mMovies[i];
         Picasso.get()
                 .load(NetworkUtils.urlStringForPosterImage(movie.imageUrl))
                 .placeholder(R.drawable.ic_ellipses)
@@ -68,7 +68,7 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieAdapter
         @Override
         public void onClick(View v) {
             int i = getAdapterPosition();
-            Movie movie = mMovies[i];
+            MovieBase movie = mMovies[i];
             if (mOnClickHandler != null) {
                 mOnClickHandler.onClick(movie);
             }

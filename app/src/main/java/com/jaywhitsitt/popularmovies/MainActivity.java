@@ -13,7 +13,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
-import com.jaywhitsitt.popularmovies.data.Movie;
+import com.jaywhitsitt.popularmovies.data.MovieBase;
 import com.jaywhitsitt.popularmovies.utilities.MovieJsonUtils;
 import com.jaywhitsitt.popularmovies.utilities.NetworkUtils;
 
@@ -52,17 +52,17 @@ public class MainActivity extends AppCompatActivity implements MovieOnClickHandl
     }
 
     @Override
-    public void onClick(Movie movie) {
+    public void onClick(MovieBase movie) {
         Intent intent = new Intent(this, DetailActivity.class);
         startActivity(intent);
     }
 
-    public class FetchMoviesTask extends AsyncTask<String, Void, Movie[]> {
+    public class FetchMoviesTask extends AsyncTask<String, Void, MovieBase[]> {
 
         private final String TAG = FetchMoviesTask.class.getSimpleName();
 
         @Override
-        protected Movie[] doInBackground(String... strings) {
+        protected MovieBase[] doInBackground(String... strings) {
             String selection = strings.length > 0 && strings[0] != null ? strings[0] : SORT_BY_POPULAR;
 
             URL url;
@@ -78,7 +78,7 @@ public class MainActivity extends AppCompatActivity implements MovieOnClickHandl
             try {
                 String jsonString = NetworkUtils.getResponseFromHttpUrl(url);
                 Log.i(TAG, jsonString == null ? "null" : jsonString);
-                Movie[] movies = MovieJsonUtils.moviesFromJson(jsonString);
+                MovieBase[] movies = MovieJsonUtils.moviesFromJson(jsonString);
                 return movies;
 
             } catch (IOException e) {
@@ -88,7 +88,7 @@ public class MainActivity extends AppCompatActivity implements MovieOnClickHandl
         }
 
         @Override
-        protected void onPostExecute(Movie[] movies) {
+        protected void onPostExecute(MovieBase[] movies) {
             mMovieAdapter.setData(movies);
         }
 

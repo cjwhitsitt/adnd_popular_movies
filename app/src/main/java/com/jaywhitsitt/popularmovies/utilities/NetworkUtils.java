@@ -36,7 +36,7 @@ public class NetworkUtils {
     private static URL urlWithPath(String path) {
         Uri uri = Uri.parse(apiBase).buildUpon()
                 .appendPath("movie")
-                .appendEncodedPath(path) // TODO: look into using path instead
+                .appendPath(path)
                 .appendQueryParameter("api_key", BuildConfig.TMDAPIKey)
                 .build();
 

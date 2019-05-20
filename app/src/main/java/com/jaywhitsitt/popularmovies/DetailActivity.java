@@ -15,6 +15,8 @@ import com.squareup.picasso.Picasso;
 
 import java.io.IOException;
 import java.net.URL;
+import java.util.Calendar;
+import java.util.GregorianCalendar;
 
 public class DetailActivity extends AppCompatActivity {
 
@@ -83,9 +85,12 @@ public class DetailActivity extends AppCompatActivity {
                     .load(NetworkUtils.urlStringForPosterImage(movie.imageUrl))
                     .error(R.drawable.ic_error_cloud)
                     .into(mImageView);
-            mYearTextView.setText(String.valueOf(movie.releaseDate.getYear()));
             mLengthTextView.setText(String.valueOf(movie.runtime));
             mDateTextView.setText(movie.releaseDate.toString());
+
+            Calendar calendar = new GregorianCalendar();
+            calendar.setTime(movie.releaseDate);
+            mYearTextView.setText(String.valueOf(calendar.get(Calendar.YEAR)));
         }
 
     }

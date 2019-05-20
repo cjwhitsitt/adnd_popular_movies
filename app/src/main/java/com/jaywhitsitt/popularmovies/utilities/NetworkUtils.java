@@ -27,6 +27,10 @@ public class NetworkUtils {
         return urlWithPath("top_rated");
     }
 
+    public static URL urlForMovie(int id) {
+        return urlWithPath(String.valueOf(id));
+    }
+
     public static String urlStringForPosterImage(String path) {
         String url = imageBase + "w185" + path; // TODO: adjust for screen size
         Log.d(TAG, "poster url = " + url);

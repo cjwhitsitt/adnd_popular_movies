@@ -54,6 +54,8 @@ public class MainActivity extends AppCompatActivity implements MovieOnClickHandl
     @Override
     public void onClick(MovieBase movie) {
         Intent intent = new Intent(this, DetailActivity.class);
+        intent.putExtra(Intent.EXTRA_TITLE, movie.title);
+        intent.putExtra(Intent.EXTRA_UID, movie.id);
         startActivity(intent);
     }
 

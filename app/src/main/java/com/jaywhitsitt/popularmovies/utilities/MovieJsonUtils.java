@@ -1,10 +1,13 @@
 package com.jaywhitsitt.popularmovies.utilities;
 
 import com.jaywhitsitt.popularmovies.data.MovieBase;
+import com.jaywhitsitt.popularmovies.data.MovieDetail;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import java.sql.Date;
 
 public class MovieJsonUtils {
 
@@ -17,9 +20,10 @@ public class MovieJsonUtils {
             movies = new MovieBase[results.length()];
 
             for (int i = 0; i < results.length(); i++) {
+                int id = results.getJSONObject(i).getInt("id");
                 String title = results.getJSONObject(i).getString("title");
                 String posterPath = results.getJSONObject(i).getString("poster_path");
-                movies[i] = new MovieBase(title, posterPath);
+                movies[i] = new MovieBase(id, title, posterPath);
             }
 
         } catch (JSONException e) {
@@ -29,4 +33,23 @@ public class MovieJsonUtils {
         return movies;
     }
 
+    public static MovieDetail movieFromJson(String jsonString) {
+        MovieDetail movie = null;
+
+        try {
+            JSONObject obj = new JSONObject(jsonString);
+            int id = obj.getInt("id");
+            String title = obj.getString("title");
+            String posterPath = obj.getString("poster_path");
+            int runtime = obj.getInt("runtime");
+            String releaseDateString = obj.getString("release_date");
+            Date releaseDate = Date.valueOf(releaseDateString);
+            movie = new MovieDetail(id, title, posterPath, runtime, releaseDate);
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        return movie;
+    }
 }

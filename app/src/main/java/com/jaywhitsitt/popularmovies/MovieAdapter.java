@@ -12,9 +12,18 @@ import com.jaywhitsitt.popularmovies.data.Movie;
 import com.jaywhitsitt.popularmovies.utilities.NetworkUtils;
 import com.squareup.picasso.Picasso;
 
+interface MovieOnClickHandler {
+    void onClick(Movie movie);
+}
+
 public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieAdapterViewHolder> {
 
     private Movie[] mMovies;
+    private MovieOnClickHandler mOnClickHandler;
+
+    public MovieAdapter(MovieOnClickHandler onClickHandler) {
+        mOnClickHandler = onClickHandler;
+    }
 
     public void setData(Movie[] movies) {
         mMovies = movies;
@@ -46,15 +55,24 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieAdapter
         return mMovies == null ? 0 : mMovies.length;
     }
 
-    public class MovieAdapterViewHolder extends RecyclerView.ViewHolder {
+    public class MovieAdapterViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
         ImageView mImageView;
 
         public MovieAdapterViewHolder(@NonNull View itemView) {
             super(itemView);
             mImageView = itemView.findViewById(R.id.iv_poster);
+            itemView.setOnClickListener(this);
         }
 
+        @Override
+        public void onClick(View v) {
+            int i = getAdapterPosition();
+            Movie movie = mMovies[i];
+            if (mOnClickHandler != null) {
+                mOnClickHandler.onClick(movie);
+            }
+        }
     }
 
 }

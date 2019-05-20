@@ -1,5 +1,6 @@
 package com.jaywhitsitt.popularmovies;
 
+import android.content.Intent;
 import android.net.Network;
 import android.net.Uri;
 import android.os.AsyncTask;
@@ -19,7 +20,7 @@ import com.jaywhitsitt.popularmovies.utilities.NetworkUtils;
 import java.io.IOException;
 import java.net.URL;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements MovieOnClickHandler {
 
     RecyclerView mRecyclerView;
     MovieAdapter mMovieAdapter;
@@ -32,13 +33,15 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        getSupportActionBar().setTitle(R.string.main_title);
+
         mRecyclerView = findViewById(R.id.rv_movies);
 
         GridLayoutManager layoutManager = new GridLayoutManager(this, 2);
         mRecyclerView.setLayoutManager(layoutManager);
         mRecyclerView.setHasFixedSize(true);
 
-        mMovieAdapter = new MovieAdapter();
+        mMovieAdapter = new MovieAdapter(this);
         mRecyclerView.setAdapter(mMovieAdapter);
 
         loadData(SORT_BY_POPULAR);
@@ -46,6 +49,12 @@ public class MainActivity extends AppCompatActivity {
 
     private void loadData(String sortSelection) {
         new FetchMoviesTask().execute(sortSelection);
+    }
+
+    @Override
+    public void onClick(Movie movie) {
+        Intent intent = new Intent(this, DetailActivity.class);
+        startActivity(intent);
     }
 
     public class FetchMoviesTask extends AsyncTask<String, Void, Movie[]> {

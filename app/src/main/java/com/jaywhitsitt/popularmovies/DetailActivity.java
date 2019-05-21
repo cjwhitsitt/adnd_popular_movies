@@ -70,6 +70,11 @@ public class DetailActivity extends AppCompatActivity {
 
     @SuppressLint("SetTextI18n") // Rating shouldn't be internationalized
     private void updateUI(MovieDetail movie) {
+        if (movie == null) {
+            showError();
+            return;
+        }
+
         Picasso.get()
                 .load(NetworkUtils.urlStringForPosterImage(movie.imageUrl))
                 .error(R.drawable.ic_error_cloud)
@@ -115,11 +120,7 @@ public class DetailActivity extends AppCompatActivity {
 
         @Override
         protected void onPostExecute(MovieDetail movie) {
-            if (movie == null) {
-                showError();
-            } else {
-                updateUI(movie);
-            }
+            updateUI(movie);
             mLoadingSpinner.setVisibility(View.GONE);
         }
 

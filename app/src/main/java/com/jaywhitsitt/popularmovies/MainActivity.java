@@ -13,6 +13,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.ProgressBar;
 
 import com.jaywhitsitt.popularmovies.data.MovieBase;
@@ -26,6 +27,7 @@ public class MainActivity extends AppCompatActivity implements MovieOnClickHandl
 
     RecyclerView mRecyclerView;
     ProgressBar mLoadingSpinner;
+    ImageView mErrorImageView;
     MovieAdapter mMovieAdapter;
 
     private static final String SORT_BY_POPULAR = "POPULAR";
@@ -40,6 +42,7 @@ public class MainActivity extends AppCompatActivity implements MovieOnClickHandl
 
         mRecyclerView = findViewById(R.id.rv_movies);
         mLoadingSpinner = findViewById(R.id.pb_main_loading_spinner);
+        mErrorImageView = findViewById(R.id.iv_main_error);
 
         GridLayoutManager layoutManager = new GridLayoutManager(this, 2);
         mRecyclerView.setLayoutManager(layoutManager);
@@ -53,6 +56,10 @@ public class MainActivity extends AppCompatActivity implements MovieOnClickHandl
 
     private void loadData(String sortSelection) {
         new FetchMoviesTask().execute(sortSelection);
+    }
+
+    private void showError() {
+        mErrorImageView.setVisibility(View.VISIBLE);
     }
 
     @Override
@@ -70,6 +77,7 @@ public class MainActivity extends AppCompatActivity implements MovieOnClickHandl
         @Override
         protected void onPreExecute() {
             mLoadingSpinner.setVisibility(View.VISIBLE);
+            mErrorImageView.setVisibility(View.GONE);
         }
 
         @Override
@@ -99,6 +107,9 @@ public class MainActivity extends AppCompatActivity implements MovieOnClickHandl
 
         @Override
         protected void onPostExecute(MovieBase[] movies) {
+            if (movies == null) {
+                showError();
+            }
             mMovieAdapter.setData(movies);
             mLoadingSpinner.setVisibility(View.GONE);
         }

@@ -12,6 +12,8 @@ import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.ProgressBar;
 
 import com.jaywhitsitt.popularmovies.data.MovieBase;
 import com.jaywhitsitt.popularmovies.utilities.MovieJsonUtils;
@@ -23,6 +25,7 @@ import java.net.URL;
 public class MainActivity extends AppCompatActivity implements MovieOnClickHandler {
 
     RecyclerView mRecyclerView;
+    ProgressBar mLoadingSpinner;
     MovieAdapter mMovieAdapter;
 
     private static final String SORT_BY_POPULAR = "POPULAR";
@@ -36,6 +39,7 @@ public class MainActivity extends AppCompatActivity implements MovieOnClickHandl
         getSupportActionBar().setTitle(R.string.main_title);
 
         mRecyclerView = findViewById(R.id.rv_movies);
+        mLoadingSpinner = findViewById(R.id.pb_main_loading_spinner);
 
         GridLayoutManager layoutManager = new GridLayoutManager(this, 2);
         mRecyclerView.setLayoutManager(layoutManager);
@@ -63,7 +67,10 @@ public class MainActivity extends AppCompatActivity implements MovieOnClickHandl
 
         private final String TAG = FetchMoviesTask.class.getSimpleName();
 
-        // TODO: loading spinner
+        @Override
+        protected void onPreExecute() {
+            mLoadingSpinner.setVisibility(View.VISIBLE);
+        }
 
         @Override
         protected MovieBase[] doInBackground(String... strings) {
@@ -93,6 +100,7 @@ public class MainActivity extends AppCompatActivity implements MovieOnClickHandl
         @Override
         protected void onPostExecute(MovieBase[] movies) {
             mMovieAdapter.setData(movies);
+            mLoadingSpinner.setVisibility(View.GONE);
         }
 
     }

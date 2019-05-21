@@ -56,9 +56,29 @@ public class DetailActivity extends AppCompatActivity {
         new FetchMovieTask().execute(id);
     }
 
+    private void updateUI(MovieDetail movie) {
+        Picasso.get()
+                .load(NetworkUtils.urlStringForPosterImage(movie.imageUrl))
+                .error(R.drawable.ic_error_cloud)
+                .into(mImageView);
+        mDateTextView.setText(movie.releaseDate.toString());
+
+        String length = getResources().getQuantityString(
+                R.plurals.minutes_short,
+                movie.runtime,
+                movie.runtime);
+        mLengthTextView.setText(length);
+
+        Calendar calendar = new GregorianCalendar();
+        calendar.setTime(movie.releaseDate);
+        mYearTextView.setText(String.valueOf(calendar.get(Calendar.YEAR)));
+    }
+
     private class FetchMovieTask extends AsyncTask<Integer, Void, MovieDetail> {
 
         private final String TAG = this.getClass().getSimpleName();
+
+        // TODO: loading spinner
 
         @Override
         protected MovieDetail doInBackground(Integer... integers) {
@@ -70,8 +90,7 @@ public class DetailActivity extends AppCompatActivity {
             try {
                 String jsonString = NetworkUtils.getResponseFromHttpUrl(url);
                 Log.v(TAG, jsonString == null ? "null" : jsonString);
-                MovieDetail movie = MovieJsonUtils.movieFromJson(jsonString);
-                return movie;
+                return MovieJsonUtils.movieFromJson(jsonString);
 
             } catch (IOException e) {
                 e.printStackTrace();
@@ -81,16 +100,7 @@ public class DetailActivity extends AppCompatActivity {
 
         @Override
         protected void onPostExecute(MovieDetail movie) {
-            Picasso.get()
-                    .load(NetworkUtils.urlStringForPosterImage(movie.imageUrl))
-                    .error(R.drawable.ic_error_cloud)
-                    .into(mImageView);
-            mLengthTextView.setText(String.valueOf(movie.runtime));
-            mDateTextView.setText(movie.releaseDate.toString());
-
-            Calendar calendar = new GregorianCalendar();
-            calendar.setTime(movie.releaseDate);
-            mYearTextView.setText(String.valueOf(calendar.get(Calendar.YEAR)));
+            updateUI(movie);
         }
 
     }

@@ -63,6 +63,8 @@ public class MainActivity extends AppCompatActivity implements MovieOnClickHandl
 
         private final String TAG = FetchMoviesTask.class.getSimpleName();
 
+        // TODO: loading spinner
+
         @Override
         protected MovieBase[] doInBackground(String... strings) {
             String selection = strings.length > 0 && strings[0] != null ? strings[0] : SORT_BY_POPULAR;
@@ -73,7 +75,7 @@ public class MainActivity extends AppCompatActivity implements MovieOnClickHandl
             } else if (selection == SORT_BY_TOP_RATED) {
                 url = NetworkUtils.urlForTopRatedMovies();
             } else {
-                Log.e(TAG, "Invalid sorting selection " + String.valueOf(selection));
+                Log.e(TAG, "Invalid sorting selection " + selection);
                 return null;
             }
 

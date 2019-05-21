@@ -61,7 +61,8 @@ public class DetailActivity extends AppCompatActivity {
     }
 
     private void showError() {
-        // TODO:
+        findViewById(R.id.sv_details).setVisibility(View.GONE);
+        findViewById(R.id.iv_detail_error).setVisibility(View.VISIBLE);
     }
 
     private void updateUI(MovieDetail movie) {
@@ -111,7 +112,11 @@ public class DetailActivity extends AppCompatActivity {
 
         @Override
         protected void onPostExecute(MovieDetail movie) {
-            updateUI(movie);
+            if (movie == null) {
+                showError();
+            } else {
+                updateUI(movie);
+            }
             mLoadingSpinner.setVisibility(View.GONE);
         }
 

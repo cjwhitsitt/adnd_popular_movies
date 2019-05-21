@@ -53,7 +53,7 @@ public class DetailActivity extends AppCompatActivity {
             // TODO: error
         }
 
-        new FetchMovieTask().execute(Integer.valueOf(id));
+        new FetchMovieTask().execute(id);
     }
 
     private class FetchMovieTask extends AsyncTask<Integer, Void, MovieDetail> {
@@ -65,7 +65,7 @@ public class DetailActivity extends AppCompatActivity {
             if (integers == null || integers.length <= 0 || integers[0] == null) {
                 throw new IllegalArgumentException("Integer array must have non-null elements");
             }
-            int id = integers[0].intValue();
+            int id = integers[0];
             URL url = NetworkUtils.urlForMovie(id);
             try {
                 String jsonString = NetworkUtils.getResponseFromHttpUrl(url);

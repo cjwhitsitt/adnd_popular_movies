@@ -80,8 +80,7 @@ public class MainActivity extends AppCompatActivity implements MovieOnClickHandl
             try {
                 String jsonString = NetworkUtils.getResponseFromHttpUrl(url);
                 Log.i(TAG, jsonString == null ? "null" : jsonString);
-                MovieBase[] movies = MovieJsonUtils.moviesFromJson(jsonString);
-                return movies;
+                return MovieJsonUtils.moviesFromJson(jsonString);
 
             } catch (IOException e) {
                 e.printStackTrace();

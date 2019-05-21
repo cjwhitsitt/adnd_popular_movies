@@ -21,7 +21,7 @@
     </android.support.constraint.ConstraintLayout>
 
     <ProgressBar
-        android:id="@+id/pb_loading"
+        android:id="@+id/pb_poster_loading_spinner"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center" />

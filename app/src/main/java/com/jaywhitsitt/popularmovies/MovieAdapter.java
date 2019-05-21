@@ -75,7 +75,7 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieAdapter
         public MovieAdapterViewHolder(@NonNull View itemView) {
             super(itemView);
             mImageView = itemView.findViewById(R.id.iv_poster);
-            mLoadingSpinner = itemView.findViewById(R.id.pb_loading); // TODO: rename id
+            mLoadingSpinner = itemView.findViewById(R.id.pb_poster_loading_spinner);
             itemView.setOnClickListener(this);
         }
 

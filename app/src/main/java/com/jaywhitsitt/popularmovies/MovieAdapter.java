@@ -3,11 +3,9 @@ package com.jaywhitsitt.popularmovies;
 import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.ViewTreeObserver;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 
@@ -21,8 +19,6 @@ interface MovieOnClickHandler {
 }
 
 public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieAdapterViewHolder> {
-
-    final static private String TAG = MovieAdapter.class.getSimpleName();
 
     private MovieBase[] mMovies;
     final private MovieOnClickHandler mOnClickHandler;
@@ -76,8 +72,8 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieAdapter
 
     public class MovieAdapterViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
-        ImageView mImageView;
-        ProgressBar mLoadingSpinner;
+        final ImageView mImageView;
+        final ProgressBar mLoadingSpinner;
 
         public MovieAdapterViewHolder(@NonNull final View itemView) {
             super(itemView);

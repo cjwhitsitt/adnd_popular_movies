@@ -92,6 +92,7 @@ public class DetailActivity extends AppCompatActivity {
         mSynopsisTextView.setText(movie.synopsis);
     }
 
+    @SuppressLint("StaticFieldLeak")
     private class FetchMovieTask extends AsyncTask<Integer, Void, MovieDetail> {
 
         private final String TAG = this.getClass().getSimpleName();

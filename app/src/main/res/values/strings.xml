@@ -1,10 +1,16 @@
 <resources>
     <string name="app_name">Popular Movies</string>
     <string name="main_title">Movies</string>
-    <string name="loading_value">...</string>
+    <string name="loading_value">…</string>
+    <string name="popular_menu_title">Popular</string>
+    <string name="top_rated_menu_title">Top Rated</string>
 
     <plurals name="minutes_short">
         <item quantity="one">%d min</item>
         <item quantity="other">%d mins</item>
     </plurals>
+
+    <!-- Accessibility -->
+    <string name="error_image_description">Error occurred</string>
+    <string name="movie_poster_image_description">Movie poster</string>
 </resources>

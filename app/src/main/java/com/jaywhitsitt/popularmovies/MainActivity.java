@@ -1,14 +1,12 @@
 package com.jaywhitsitt.popularmovies;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.graphics.Point;
-import android.net.Network;
-import android.net.Uri;
 import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
-import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.Menu;
@@ -73,6 +71,7 @@ public class MainActivity extends AppCompatActivity implements MovieOnClickHandl
         startActivity(intent);
     }
 
+    @SuppressLint("StaticFieldLeak")
     public class FetchMoviesTask extends AsyncTask<String, Void, MovieBase[]> {
 
         private final String TAG = FetchMoviesTask.class.getSimpleName();
@@ -88,9 +87,9 @@ public class MainActivity extends AppCompatActivity implements MovieOnClickHandl
             String selection = strings.length > 0 && strings[0] != null ? strings[0] : SORT_BY_POPULAR;
 
             URL url;
-            if (selection == SORT_BY_POPULAR) {
+            if (selection.equals(SORT_BY_POPULAR)) {
                 url = NetworkUtils.urlForMostPopularMovies();
-            } else if (selection == SORT_BY_TOP_RATED) {
+            } else if (selection.equals(SORT_BY_TOP_RATED)) {
                 url = NetworkUtils.urlForTopRatedMovies();
             } else {
                 Log.e(TAG, "Invalid sorting selection " + selection);

@@ -1,6 +1,7 @@
 package com.jaywhitsitt.popularmovies;
 
 import android.content.Intent;
+import android.graphics.Point;
 import android.net.Network;
 import android.net.Uri;
 import android.os.AsyncTask;
@@ -48,7 +49,9 @@ public class MainActivity extends AppCompatActivity implements MovieOnClickHandl
         mRecyclerView.setLayoutManager(layoutManager);
         mRecyclerView.setHasFixedSize(true);
 
-        mMovieAdapter = new MovieAdapter(this);
+        Point size = new Point();
+        getWindowManager().getDefaultDisplay().getSize(size);
+        mMovieAdapter = new MovieAdapter(this, size.x/2);
         mRecyclerView.setAdapter(mMovieAdapter);
 
         loadData(SORT_BY_POPULAR);

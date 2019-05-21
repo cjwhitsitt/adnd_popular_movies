@@ -3,9 +3,11 @@ package com.jaywhitsitt.popularmovies;
 import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewTreeObserver;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 
@@ -20,11 +22,15 @@ interface MovieOnClickHandler {
 
 public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieAdapterViewHolder> {
 
-    private MovieBase[] mMovies;
-    private MovieOnClickHandler mOnClickHandler;
+    final static private String TAG = MovieAdapter.class.getSimpleName();
 
-    public MovieAdapter(MovieOnClickHandler onClickHandler) {
+    private MovieBase[] mMovies;
+    final private MovieOnClickHandler mOnClickHandler;
+    final private int mExpectedItemWidth;
+
+    public MovieAdapter(MovieOnClickHandler onClickHandler, int expectedItemWidth) {
         mOnClickHandler = onClickHandler;
+        mExpectedItemWidth = expectedItemWidth;
     }
 
     public void setData(MovieBase[] movies) {
@@ -49,8 +55,9 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieAdapter
 
         imageView.setImageDrawable(null);
         loadingSpinner.setVisibility(View.VISIBLE);
+
         Picasso.get()
-                .load(NetworkUtils.urlStringForPosterImage(movie.imageUrl))
+                .load(NetworkUtils.urlStringForPosterImage(movie.imageUrl, mExpectedItemWidth))
                 .error(R.drawable.ic_error_cloud)
                 .into(imageView, new Callback() {
                     @Override
@@ -72,7 +79,7 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieAdapter
         ImageView mImageView;
         ProgressBar mLoadingSpinner;
 
-        public MovieAdapterViewHolder(@NonNull View itemView) {
+        public MovieAdapterViewHolder(@NonNull final View itemView) {
             super(itemView);
             mImageView = itemView.findViewById(R.id.iv_poster);
             mLoadingSpinner = itemView.findViewById(R.id.pb_poster_loading_spinner);

@@ -75,8 +75,9 @@ public class DetailActivity extends AppCompatActivity {
             return;
         }
 
+        int width = mImageView.getMeasuredWidth();
         Picasso.get()
-                .load(NetworkUtils.urlStringForPosterImage(movie.imageUrl))
+                .load(NetworkUtils.urlStringForPosterImage(movie.imageUrl, width))
                 .error(R.drawable.ic_error_cloud)
                 .into(mImageView);
         Calendar calendar = new GregorianCalendar();

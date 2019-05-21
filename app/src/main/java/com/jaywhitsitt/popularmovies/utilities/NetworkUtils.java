@@ -31,8 +31,24 @@ public class NetworkUtils {
         return urlWithPath(String.valueOf(id));
     }
 
-    public static String urlStringForPosterImage(String path) {
-        String url = imageBase + "w185" + path; // TODO: adjust for screen size
+    public static String urlStringForPosterImage(String path, int minWidth) {
+        String size;
+        if (minWidth > 780) {
+            size = "original";
+        } else if (minWidth > 500) {
+            size = "w780";
+        } else if (minWidth > 342) {
+            size = "w500";
+        } else if (minWidth > 185) {
+            size = "w342";
+        } else if (minWidth > 154) {
+            size = "w185";
+        } else if (minWidth > 92) {
+            size = "w154";
+        } else {
+            size = "w92";
+        }
+        String url = imageBase + size + path;
         Log.d(TAG, "poster url = " + url);
         return url;
     }

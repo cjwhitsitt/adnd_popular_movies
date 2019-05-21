@@ -2,4 +2,9 @@
     <string name="app_name">Popular Movies</string>
     <string name="main_title">Movies</string>
     <string name="loading_value">...</string>
+
+    <plurals name="minutes_short">
+        <item quantity="one">%d min</item>
+        <item quantity="other">%d mins</item>
+    </plurals>
 </resources>

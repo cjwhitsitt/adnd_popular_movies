@@ -5,7 +5,9 @@ import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.jaywhitsitt.popularmovies.data.MovieDetail;
@@ -24,6 +26,7 @@ public class DetailActivity extends AppCompatActivity {
     TextView mYearTextView;
     TextView mLengthTextView;
     TextView mDateTextView;
+    ProgressBar mLoadingSpinner;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,26 +37,31 @@ public class DetailActivity extends AppCompatActivity {
         mYearTextView = findViewById(R.id.tv_detail_year);
         mLengthTextView = findViewById(R.id.tv_detail_length);
         mDateTextView = findViewById(R.id.tv_detail_date);
+        mLoadingSpinner = findViewById(R.id.pb_detail_loading_spinner);
 
         Intent intent = getIntent();
-        String title = "Loading...";
         if (intent.hasExtra(Intent.EXTRA_TITLE)) {
-            title = intent.getStringExtra(Intent.EXTRA_TITLE);
+            getSupportActionBar().setTitle(intent.getStringExtra(Intent.EXTRA_TITLE));
         }
-        getSupportActionBar().setTitle(title);
 
         if (intent.hasExtra(Intent.EXTRA_UID)) {
             int id = intent.getIntExtra(Intent.EXTRA_UID, 0);
             loadData(id);
+        } else {
+            showError();
         }
     }
 
     private void loadData(int id) {
         if (id <= 0) {
-            // TODO: error
+            showError();
+            return;
         }
-
         new FetchMovieTask().execute(id);
+    }
+
+    private void showError() {
+        // TODO:
     }
 
     private void updateUI(MovieDetail movie) {
@@ -78,7 +86,10 @@ public class DetailActivity extends AppCompatActivity {
 
         private final String TAG = this.getClass().getSimpleName();
 
-        // TODO: loading spinner
+        @Override
+        protected void onPreExecute() {
+            mLoadingSpinner.setVisibility(View.VISIBLE);
+        }
 
         @Override
         protected MovieDetail doInBackground(Integer... integers) {
@@ -101,6 +112,7 @@ public class DetailActivity extends AppCompatActivity {
         @Override
         protected void onPostExecute(MovieDetail movie) {
             updateUI(movie);
+            mLoadingSpinner.setVisibility(View.GONE);
         }
 
     }

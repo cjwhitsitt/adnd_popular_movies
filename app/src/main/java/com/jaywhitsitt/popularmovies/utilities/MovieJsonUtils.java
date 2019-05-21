@@ -11,6 +11,8 @@ import java.sql.Date;
 
 public class MovieJsonUtils {
 
+    // TODO: common variables for json keys
+
     public static MovieBase[] moviesFromJson(String string) {
         MovieBase[] movies = null;
 
@@ -44,7 +46,9 @@ public class MovieJsonUtils {
             int runtime = obj.getInt("runtime");
             String releaseDateString = obj.getString("release_date");
             Date releaseDate = Date.valueOf(releaseDateString);
-            movie = new MovieDetail(id, title, posterPath, runtime, releaseDate);
+            double rating = obj.getDouble("vote_average");
+            String synopsis = obj.getString("overview");
+            movie = new MovieDetail(id, title, posterPath, runtime, releaseDate, rating, synopsis);
 
         } catch (JSONException e) {
             e.printStackTrace();

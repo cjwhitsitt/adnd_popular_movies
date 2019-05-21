@@ -1,5 +1,6 @@
 package com.jaywhitsitt.popularmovies;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
@@ -25,7 +26,8 @@ public class DetailActivity extends AppCompatActivity {
     ImageView mImageView;
     TextView mYearTextView;
     TextView mLengthTextView;
-    TextView mDateTextView;
+    TextView mRatingTextView;
+    TextView mSynopsisTextView;
     ProgressBar mLoadingSpinner;
 
     @Override
@@ -36,7 +38,8 @@ public class DetailActivity extends AppCompatActivity {
         mImageView = findViewById(R.id.iv_detail_poster);
         mYearTextView = findViewById(R.id.tv_detail_year);
         mLengthTextView = findViewById(R.id.tv_detail_length);
-        mDateTextView = findViewById(R.id.tv_detail_date);
+        mRatingTextView = findViewById(R.id.tv_detail_rating);
+        mSynopsisTextView = findViewById(R.id.tv_detail_synopsis);
         mLoadingSpinner = findViewById(R.id.pb_detail_loading_spinner);
 
         Intent intent = getIntent();
@@ -65,22 +68,22 @@ public class DetailActivity extends AppCompatActivity {
         findViewById(R.id.iv_detail_error).setVisibility(View.VISIBLE);
     }
 
+    @SuppressLint("SetTextI18n") // Rating shouldn't be internationalized
     private void updateUI(MovieDetail movie) {
         Picasso.get()
                 .load(NetworkUtils.urlStringForPosterImage(movie.imageUrl))
                 .error(R.drawable.ic_error_cloud)
                 .into(mImageView);
-        mDateTextView.setText(movie.releaseDate.toString());
-
+        Calendar calendar = new GregorianCalendar();
+        calendar.setTime(movie.releaseDate);
+        mYearTextView.setText(String.valueOf(calendar.get(Calendar.YEAR)));
         String length = getResources().getQuantityString(
                 R.plurals.minutes_short,
                 movie.runtime,
                 movie.runtime);
         mLengthTextView.setText(length);
-
-        Calendar calendar = new GregorianCalendar();
-        calendar.setTime(movie.releaseDate);
-        mYearTextView.setText(String.valueOf(calendar.get(Calendar.YEAR)));
+        mRatingTextView.setText(movie.rating + "/10");
+        mSynopsisTextView.setText(movie.synopsis);
     }
 
     private class FetchMovieTask extends AsyncTask<Integer, Void, MovieDetail> {

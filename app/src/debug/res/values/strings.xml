@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Sample data -->
+    <string name="detail_sample_synopsis">Peter Parker and his friends go on a summer trip to Europe. However, they will hardly be able to rest - Peter will have to agree to help Nick Fury uncover the mystery of creatures that cause natural disasters and destruction throughout the continent.</string>
+    <string name="detail_sample_month_day">March 31</string>
+    <string name="detail_sample_rating">7.8/10</string>
+    <string name="detail_sample_runtime">129 mins</string>
+    <string name="detail_sample_year">2019</string>
+</resources>

@@ -53,10 +53,22 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
                 android:text="@string/loading_value"
+                tools:text="@string/detail_sample_year"
                 android:textSize="32sp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/iv_detail_poster"
                 app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/tv_detail_month_day"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="@string/loading_value"
+                tools:text="@string/detail_sample_month_day"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="@id/tv_detail_year"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/tv_detail_year" />
 
             <TextView
                 android:id="@+id/tv_detail_length"
@@ -64,10 +76,11 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
                 android:text="@string/loading_value"
+                tools:text="@string/detail_sample_runtime"
                 app:layout_constraintHorizontal_bias="0.0"
-                app:layout_constraintStart_toStartOf="@id/tv_detail_year"
+                app:layout_constraintStart_toStartOf="@id/tv_detail_month_day"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/tv_detail_year" />
+                app:layout_constraintTop_toBottomOf="@id/tv_detail_month_day" />
 
             <TextView
                 android:id="@+id/tv_detail_rating"
@@ -75,6 +88,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
                 android:text="@string/loading_value"
+                tools:text="@string/detail_sample_rating"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="@id/tv_detail_length"
@@ -87,6 +101,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
+                tools:text="@string/detail_sample_synopsis"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/iv_detail_poster"

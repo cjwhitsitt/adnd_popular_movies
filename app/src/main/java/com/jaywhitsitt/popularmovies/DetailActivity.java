@@ -18,13 +18,16 @@ import com.squareup.picasso.Picasso;
 
 import java.io.IOException;
 import java.net.URL;
+import java.text.DateFormat;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.GregorianCalendar;
 
 public class DetailActivity extends AppCompatActivity {
 
     ImageView mImageView;
     TextView mYearTextView;
+    TextView mMonthDayTextView;
     TextView mLengthTextView;
     TextView mRatingTextView;
     TextView mSynopsisTextView;
@@ -37,6 +40,7 @@ public class DetailActivity extends AppCompatActivity {
 
         mImageView = findViewById(R.id.iv_detail_poster);
         mYearTextView = findViewById(R.id.tv_detail_year);
+        mMonthDayTextView = findViewById(R.id.tv_detail_month_day);
         mLengthTextView = findViewById(R.id.tv_detail_length);
         mRatingTextView = findViewById(R.id.tv_detail_rating);
         mSynopsisTextView = findViewById(R.id.tv_detail_synopsis);
@@ -80,9 +84,15 @@ public class DetailActivity extends AppCompatActivity {
                 .load(NetworkUtils.urlStringForPosterImage(movie.imageUrl, width))
                 .error(R.drawable.ic_error_cloud)
                 .into(mImageView);
+
         Calendar calendar = new GregorianCalendar();
         calendar.setTime(movie.releaseDate);
         mYearTextView.setText(String.valueOf(calendar.get(Calendar.YEAR)));
+
+        String monthDayString = android.text.format.DateFormat
+                .format("MMMM dd", movie.releaseDate)
+                .toString();
+        mMonthDayTextView.setText(monthDayString);
         String length = getResources().getQuantityString(
                 R.plurals.minutes_short,
                 movie.runtime,

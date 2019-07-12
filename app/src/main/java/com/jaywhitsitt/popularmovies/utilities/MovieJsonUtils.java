@@ -47,14 +47,35 @@ public class MovieJsonUtils {
 
         try {
             JSONObject obj = new JSONObject(jsonString);
-            int id = obj.getInt(ID_KEY);
-            String title = obj.getString(TITLE_KEY);
-            String posterPath = obj.getString(POSTER_PATH_KEY);
-            int runtime = obj.getInt(RUNTIME_KEY);
-            String releaseDateString = obj.getString(RELEASE_DATE_KEY);
-            Date releaseDate = Date.valueOf(releaseDateString);
-            double rating = obj.getDouble(VOTE_AVERAGE_KEY);
-            String synopsis = obj.getString(OVERVIEW_KEY);
+            int id, runtime;
+            String title, posterPath, synopsis;
+            Date releaseDate;
+            double rating;
+
+            try { id = obj.getInt(ID_KEY); }
+            catch (JSONException e) { id = MovieDetail.INVALID_NUMERIC_VALUE; }
+
+
+            try { title = obj.getString(TITLE_KEY); }
+            catch (JSONException e) { title = null; }
+
+            try { posterPath = obj.getString(POSTER_PATH_KEY); }
+            catch (JSONException e) { posterPath = null; }
+
+            try { runtime = obj.getInt(RUNTIME_KEY); }
+            catch (JSONException e) { runtime = MovieDetail.INVALID_NUMERIC_VALUE; }
+
+            try {
+                String releaseDateString = obj.getString(RELEASE_DATE_KEY);
+                releaseDate = Date.valueOf(releaseDateString);
+            } catch (JSONException e) { releaseDate = null; }
+
+            try { rating = obj.getDouble(VOTE_AVERAGE_KEY); }
+            catch (JSONException e) { rating = MovieDetail.INVALID_NUMERIC_VALUE; }
+
+            try { synopsis = obj.getString(OVERVIEW_KEY); }
+            catch (JSONException e) { synopsis = null; }
+
             movie = new MovieDetail(id, title, posterPath, runtime, releaseDate, rating, synopsis);
 
         } catch (JSONException e) {

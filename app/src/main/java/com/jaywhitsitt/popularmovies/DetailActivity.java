@@ -18,9 +18,7 @@ import com.squareup.picasso.Picasso;
 
 import java.io.IOException;
 import java.net.URL;
-import java.text.DateFormat;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.GregorianCalendar;
 
 public class DetailActivity extends AppCompatActivity {
@@ -98,7 +96,11 @@ public class DetailActivity extends AppCompatActivity {
                 movie.runtime,
                 movie.runtime);
         mLengthTextView.setText(length);
+        mLengthTextView.setVisibility(
+                movie.runtime == MovieDetail.INVALID_NUMERIC_VALUE ? View.GONE : View.VISIBLE);
         mRatingTextView.setText(movie.rating + "/10");
+        mRatingTextView.setVisibility(
+                movie.rating == MovieDetail.INVALID_NUMERIC_VALUE ? View.GONE : View.VISIBLE);
         mSynopsisTextView.setText(movie.synopsis);
     }
 

@@ -4,6 +4,8 @@ import java.util.Date;
 
 public class MovieDetail extends MovieBase {
 
+    public static final int INVALID_NUMERIC_VALUE = -1;
+
     public final int runtime;
     public final Date releaseDate;
     public final double rating;

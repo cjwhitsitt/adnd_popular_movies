@@ -114,6 +114,7 @@ public class MainActivity extends AppCompatActivity implements MovieOnClickHandl
             }
             mMovieAdapter.setData(movies);
             mLoadingSpinner.setVisibility(View.GONE);
+            mRecyclerView.scrollToPosition(0);
         }
 
     }

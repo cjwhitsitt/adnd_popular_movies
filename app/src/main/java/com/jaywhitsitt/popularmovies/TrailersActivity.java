@@ -4,8 +4,13 @@ import android.content.Intent;
 import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.view.View;
+import android.widget.ProgressBar;
 
+import com.jaywhitsitt.popularmovies.data.Video;
 import com.jaywhitsitt.popularmovies.utilities.MovieJsonUtils;
 import com.jaywhitsitt.popularmovies.utilities.NetworkUtils;
 
@@ -16,10 +21,26 @@ public class TrailersActivity extends AppCompatActivity {
 
     private int mMovieId;
 
+    private ProgressBar mLoadingSpinner;
+    private RecyclerView mRecyclerView;
+    private VideoAdapter mAdapter;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_trailers);
+        setContentView(R.layout.activity_main);
+
+        mLoadingSpinner = findViewById(R.id.pb_main_loading_spinner);
+        mRecyclerView = findViewById(R.id.rv_movies);
+
+        LinearLayoutManager layoutManager = new LinearLayoutManager(
+                this,
+                LinearLayoutManager.VERTICAL,
+                false);
+        mRecyclerView.setLayoutManager(layoutManager);
+        mRecyclerView.setHasFixedSize(true);
+        mAdapter = new VideoAdapter();
+        mRecyclerView.setAdapter(mAdapter);
 
         Intent intent = getIntent();
         if (intent.hasExtra(Intent.EXTRA_UID)) {
@@ -27,9 +48,10 @@ public class TrailersActivity extends AppCompatActivity {
             loadData(mMovieId);
         }
         if (mMovieId == 0) {
-            // TODO: showError();
+            showError();
         }
 
+        // TODO: localize
         String title = "Videos";
         if (intent.hasExtra(Intent.EXTRA_TITLE)) {
             title += " of " + intent.getStringExtra(Intent.EXTRA_TITLE);
@@ -41,18 +63,22 @@ public class TrailersActivity extends AppCompatActivity {
         new FetchVideosTask().execute(id);
     }
 
-    // TODO: return Videos
-    public static class FetchVideosTask extends AsyncTask<Integer, Void, Void> {
+    private void showError() {
 
-        private static final String TAG = FetchVideosTask.class.getSimpleName();
+    }
+
+    // TODO: return Videos
+    public class FetchVideosTask extends AsyncTask<Integer, Void, Video[]> {
+
+        private final String TAG = FetchVideosTask.class.getSimpleName();
 
         @Override
         protected void onPreExecute() {
-            super.onPreExecute();
+            mLoadingSpinner.setVisibility(View.VISIBLE);
         }
 
         @Override
-        protected Void doInBackground(Integer... integers) {
+        protected Video[] doInBackground(Integer... integers) {
             if (integers.length < 1 || integers[0] == null) {
                 return null;
             }
@@ -61,9 +87,8 @@ public class TrailersActivity extends AppCompatActivity {
 
             try {
                 String json = NetworkUtils.getResponseFromHttpUrl(url);
-                // TODO: parse
                 Log.d(TAG, json);
-                return null;
+                return MovieJsonUtils.videosFromJson(json);
 
             } catch (IOException e) {
                 e.printStackTrace();
@@ -72,8 +97,16 @@ public class TrailersActivity extends AppCompatActivity {
         }
 
         @Override
-        protected void onPostExecute(Void aVoid) {
-            super.onPostExecute(aVoid);
+        protected void onPostExecute(Video[] videos) {
+            if (videos == null) {
+                showError();
+            } else if (videos.length == 0) {
+                // TODO: Show no videos available
+            }
+
+            mAdapter.setData(videos);
+            mLoadingSpinner.setVisibility(View.GONE);
+            mRecyclerView.scrollToPosition(0);
         }
     }
 }

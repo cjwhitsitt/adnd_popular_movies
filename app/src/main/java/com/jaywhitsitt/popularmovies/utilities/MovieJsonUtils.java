@@ -2,18 +2,21 @@ package com.jaywhitsitt.popularmovies.utilities;
 
 import com.jaywhitsitt.popularmovies.data.MovieBase;
 import com.jaywhitsitt.popularmovies.data.MovieDetail;
+import com.jaywhitsitt.popularmovies.data.Video;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.sql.Date;
+import java.util.ArrayList;
 
 public class MovieJsonUtils {
 
     private static final String RESULTS_KEY = "results";
     private static final String ID_KEY = "id";
     private static final String TITLE_KEY = "title";
+    private static final String NAME_KEY = "name";
     private static final String POSTER_PATH_KEY = "poster_path";
     private static final String RUNTIME_KEY = "runtime";
     private static final String RELEASE_DATE_KEY = "release_date";
@@ -83,5 +86,26 @@ public class MovieJsonUtils {
         }
 
         return movie;
+    }
+
+    public static Video[] videosFromJson(String jsonString) {
+        Video[] videos = null;
+
+        try {
+            JSONObject json = new JSONObject(jsonString);
+            JSONArray results = json.getJSONArray(RESULTS_KEY);
+            videos = new Video[results.length()];
+
+            for (int i = 0; i < results.length(); i++) {
+                String id = results.getJSONObject(i).getString(ID_KEY);
+                String title = results.getJSONObject(i).getString(NAME_KEY);
+                videos[i] = new Video(id, title);
+            }
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        return videos;
     }
 }

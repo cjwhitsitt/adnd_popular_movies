@@ -13,4 +13,5 @@
     <!-- Accessibility -->
     <string name="error_image_description">Error occurred</string>
     <string name="movie_poster_image_description">Movie poster</string>
+    <string name="detail_label_trailers">Trailers</string>
 </resources>

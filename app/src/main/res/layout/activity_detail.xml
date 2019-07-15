@@ -89,12 +89,23 @@
                 android:layout_marginTop="8dp"
                 android:text="@string/loading_value"
                 tools:text="@string/detail_sample_rating"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintTop_toBottomOf="@id/tv_detail_length"
                 app:layout_constraintStart_toStartOf="@id/tv_detail_length"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/tv_detail_length"
-                app:layout_constraintVertical_bias="0.0" />
+                app:layout_constraintHorizontal_bias="0.0" />
+
+            <Button
+                android:id="@+id/btn_detail_trailers"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="@string/detail_label_trailers"
+                android:onClick="showVideos"
+                app:layout_constraintTop_toBottomOf="@id/tv_detail_rating"
+                app:layout_constraintBottom_toBottomOf="@id/iv_detail_poster"
+                app:layout_constraintVertical_bias="1.0"
+                app:layout_constraintStart_toStartOf="@id/tv_detail_rating"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0" />
 
             <TextView
                 android:id="@+id/tv_detail_synopsis"

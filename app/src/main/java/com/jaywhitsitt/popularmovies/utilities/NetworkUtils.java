@@ -53,6 +53,15 @@ public class NetworkUtils {
         return url;
     }
 
+    public static URL urlForVideos(int id) {
+        return urlFromUriBuilder(
+                uriBuilder()
+                        .appendPath("movie")
+                        .appendPath(String.valueOf(id))
+                        .appendPath("videos")
+        );
+    }
+
     private static URL urlForMovieCategory(String path) {
         return urlFromUriBuilder(
                 uriBuilder()

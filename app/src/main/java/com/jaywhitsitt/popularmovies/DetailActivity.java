@@ -23,6 +23,9 @@ import java.util.GregorianCalendar;
 
 public class DetailActivity extends AppCompatActivity {
 
+    private int mMovieId;
+    private String mMovieTitle;
+
     ImageView mImageView;
     TextView mYearTextView;
     TextView mMonthDayTextView;
@@ -46,7 +49,9 @@ public class DetailActivity extends AppCompatActivity {
 
         Intent intent = getIntent();
         if (intent.hasExtra(Intent.EXTRA_TITLE)) {
-            getSupportActionBar().setTitle(intent.getStringExtra(Intent.EXTRA_TITLE));
+            String title = intent.getStringExtra(Intent.EXTRA_TITLE);
+            getSupportActionBar().setTitle(title);
+            mMovieTitle = title;
         }
 
         if (intent.hasExtra(Intent.EXTRA_UID)) {
@@ -58,6 +63,7 @@ public class DetailActivity extends AppCompatActivity {
     }
 
     private void loadData(int id) {
+        mMovieId = id;
         if (id <= 0) {
             showError();
             return;
@@ -68,6 +74,13 @@ public class DetailActivity extends AppCompatActivity {
     private void showError() {
         findViewById(R.id.sv_details).setVisibility(View.GONE);
         findViewById(R.id.iv_detail_error).setVisibility(View.VISIBLE);
+    }
+
+    public void showVideos(View view) {
+        Intent intent = new Intent(this, TrailersActivity.class);
+        intent.putExtra(Intent.EXTRA_UID, mMovieId);
+        intent.putExtra(Intent.EXTRA_TITLE, mMovieTitle);
+        startActivity(intent);
     }
 
     @SuppressLint("SetTextI18n") // Rating shouldn't be internationalized

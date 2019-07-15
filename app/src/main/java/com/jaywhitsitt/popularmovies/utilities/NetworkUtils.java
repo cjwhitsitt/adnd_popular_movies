@@ -20,15 +20,15 @@ public class NetworkUtils {
     final static private String imageBase = "https://image.tmdb.org/t/p/";
 
     public static URL urlForMostPopularMovies() {
-        return urlWithPath("popular");
+        return urlForMovieCategory("popular");
     }
 
     public static URL urlForTopRatedMovies() {
-        return urlWithPath("top_rated");
+        return urlForMovieCategory("top_rated");
     }
 
     public static URL urlForMovie(int id) {
-        return urlWithPath(String.valueOf(id));
+        return urlForMovieCategory(String.valueOf(id));
     }
 
     public static String urlStringForPosterImage(String path, int minWidth) {
@@ -53,13 +53,22 @@ public class NetworkUtils {
         return url;
     }
 
-    private static URL urlWithPath(String path) {
-        Uri uri = Uri.parse(apiBase).buildUpon()
-                .appendPath("movie")
-                .appendPath(path)
+    private static URL urlForMovieCategory(String path) {
+        return urlFromUriBuilder(
+                uriBuilder()
+                        .appendPath("movie")
+                        .appendPath(path)
+        );
+    }
+
+    private static Uri.Builder uriBuilder() {
+        return Uri.parse(apiBase).buildUpon();
+    }
+
+    private static URL urlFromUriBuilder(Uri.Builder builder) {
+        Uri uri = builder
                 .appendQueryParameter("api_key", BuildConfig.TMDAPIKey)
                 .build();
-
         try {
             String url = uri.toString();
             Log.d(TAG, "url = " + url);

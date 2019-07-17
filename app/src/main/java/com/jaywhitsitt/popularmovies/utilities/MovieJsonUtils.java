@@ -22,6 +22,8 @@ public class MovieJsonUtils {
     private static final String RELEASE_DATE_KEY = "release_date";
     private static final String VOTE_AVERAGE_KEY = "vote_average";
     private static final String OVERVIEW_KEY = "overview";
+    private static final String KEY_KEY = "key";
+    private static final String SITE_KEY = "site";
 
     public static MovieBase[] moviesFromJson(String string) {
         MovieBase[] movies = null;
@@ -97,9 +99,15 @@ public class MovieJsonUtils {
             videos = new Video[results.length()];
 
             for (int i = 0; i < results.length(); i++) {
-                String id = results.getJSONObject(i).getString(ID_KEY);
-                String title = results.getJSONObject(i).getString(NAME_KEY);
-                videos[i] = new Video(id, title);
+                JSONObject obj = results.getJSONObject(i);
+                String id = obj.getString(ID_KEY);
+                String title = obj.getString(NAME_KEY);
+                String key = obj.getString(KEY_KEY);
+
+                String siteString = obj.getString(SITE_KEY);
+                Video.Site site = Video.Site.get(siteString);
+
+                videos[i] = new Video(id, title, site, key);
             }
 
         } catch (JSONException e) {

@@ -1,6 +1,7 @@
 package com.jaywhitsitt.popularmovies;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -17,7 +18,9 @@ import com.jaywhitsitt.popularmovies.utilities.NetworkUtils;
 import java.io.IOException;
 import java.net.URL;
 
-public class TrailersActivity extends AppCompatActivity {
+public class TrailersActivity extends AppCompatActivity implements VideoOnClickHandler {
+
+    private static final String TAG = TrailersActivity.class.getSimpleName();
 
     private int mMovieId;
 
@@ -39,7 +42,7 @@ public class TrailersActivity extends AppCompatActivity {
                 false);
         mRecyclerView.setLayoutManager(layoutManager);
         mRecyclerView.setHasFixedSize(true);
-        mAdapter = new VideoAdapter();
+        mAdapter = new VideoAdapter(this);
         mRecyclerView.setAdapter(mAdapter);
 
         Intent intent = getIntent();
@@ -64,7 +67,23 @@ public class TrailersActivity extends AppCompatActivity {
     }
 
     private void showError() {
+        // TODO:
+    }
 
+    private void showToastError() {
+        // TODO:
+    }
+
+    @Override
+    public void onClick(Video video) {
+        if (video.site == Video.Site.YOUTUBE) {
+            Uri uri = Uri.parse("https://www.youtube.com/watch?v=" + video.key);
+            Intent intent = new Intent(Intent.ACTION_VIEW, uri);
+            startActivity(intent);
+        } else {
+            Log.w(TAG, "Unhandled video site: " + video.site.getId());
+            showToastError();
+        }
     }
 
     // TODO: return Videos

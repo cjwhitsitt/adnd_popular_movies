@@ -9,9 +9,18 @@ import android.widget.TextView;
 
 import com.jaywhitsitt.popularmovies.data.Video;
 
+interface VideoOnClickHandler {
+    void onClick(Video video);
+}
+
 public class VideoAdapter extends RecyclerView.Adapter<VideoAdapter.VideoAdapterViewHolder> {
 
     private Video[] mVideos;
+    final private VideoOnClickHandler mOnClickHandler;
+
+    public VideoAdapter(VideoOnClickHandler onClickHandler) {
+        mOnClickHandler = onClickHandler;
+    }
 
     public void setData(Video[] videos) {
         mVideos = videos;
@@ -43,14 +52,21 @@ public class VideoAdapter extends RecyclerView.Adapter<VideoAdapter.VideoAdapter
         viewHolder.mTitleView.setText(title);
     }
 
-    public static class VideoAdapterViewHolder extends RecyclerView.ViewHolder {
+    public class VideoAdapterViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
         final TextView mTitleView;
 
         public VideoAdapterViewHolder(@NonNull View itemView) {
             super(itemView);
             mTitleView = itemView.findViewById(R.id.tv_video_title);
+            itemView.setOnClickListener(this);
         }
 
+        @Override
+        public void onClick(View v) {
+            int position = getAdapterPosition();
+            Video video = mVideos[position];
+            mOnClickHandler.onClick(video);
+        }
     }
 }

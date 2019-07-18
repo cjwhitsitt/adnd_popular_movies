@@ -86,7 +86,6 @@ public class TrailersActivity extends AppCompatActivity implements VideoOnClickH
         }
     }
 
-    // TODO: return Videos
     public class FetchVideosTask extends AsyncTask<Integer, Void, Video[]> {
 
         private final String TAG = FetchVideosTask.class.getSimpleName();

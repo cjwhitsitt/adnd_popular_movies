@@ -76,6 +76,13 @@ public class DetailActivity extends AppCompatActivity {
         findViewById(R.id.iv_detail_error).setVisibility(View.VISIBLE);
     }
 
+    public void showReviews(View view) {
+        Intent intent = new Intent(this, ReviewsActivity.class);
+        intent.putExtra(Intent.EXTRA_UID, mMovieId);
+        intent.putExtra(Intent.EXTRA_TITLE, mMovieTitle);
+        startActivity(intent);
+    }
+
     public void showVideos(View view) {
         Intent intent = new Intent(this, TrailersActivity.class);
         intent.putExtra(Intent.EXTRA_UID, mMovieId);

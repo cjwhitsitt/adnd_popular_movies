@@ -2,6 +2,7 @@ package com.jaywhitsitt.popularmovies.utilities;
 
 import com.jaywhitsitt.popularmovies.data.MovieBase;
 import com.jaywhitsitt.popularmovies.data.MovieDetail;
+import com.jaywhitsitt.popularmovies.data.Review;
 import com.jaywhitsitt.popularmovies.data.Video;
 
 import org.json.JSONArray;
@@ -24,6 +25,8 @@ public class MovieJsonUtils {
     private static final String OVERVIEW_KEY = "overview";
     private static final String KEY_KEY = "key";
     private static final String SITE_KEY = "site";
+    private static final String AUTHOR_KEY = "author";
+    private static final String CONTENT_KEY = "content";
 
     public static MovieBase[] moviesFromJson(String string) {
         MovieBase[] movies = null;
@@ -115,5 +118,26 @@ public class MovieJsonUtils {
         }
 
         return videos;
+    }
+
+    public static Review[] reviewsFromJson(String jsonString) {
+        Review[] reviews = null;
+
+        try {
+            JSONObject json = new JSONObject(jsonString);
+            JSONArray results = json.getJSONArray(RESULTS_KEY);
+            reviews = new Review[results.length()];
+
+            for (int i = 0; i < results.length(); i++) {
+                JSONObject obj = results.getJSONObject(i);
+                String author = obj.getString(AUTHOR_KEY);
+                String content = obj.getString(CONTENT_KEY);
+                reviews[i] = new Review(author, content);
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        return reviews;
     }
 }

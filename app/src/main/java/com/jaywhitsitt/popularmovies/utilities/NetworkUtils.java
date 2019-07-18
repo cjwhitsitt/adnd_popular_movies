@@ -62,6 +62,15 @@ public class NetworkUtils {
         );
     }
 
+    public static URL urlForReview(int id) {
+        return urlFromUriBuilder(
+                uriBuilder()
+                        .appendPath("movie")
+                        .appendPath(String.valueOf(id))
+                        .appendPath("reviews")
+        );
+    }
+
     private static URL urlForMovieCategory(String path) {
         return urlFromUriBuilder(
                 uriBuilder()

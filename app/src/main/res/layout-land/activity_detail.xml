@@ -29,7 +29,6 @@
         android:paddingEnd="20dp"
         android:paddingBottom="12dp">
 
-        <!-- TODO: The image is too big on tablets -->
         <ImageView
             android:id="@+id/iv_detail_poster"
             android:layout_width="0dp"
@@ -62,7 +61,6 @@
             app:layout_constraintTop_toTopOf="@+id/iv_detail_poster"
             tools:text="@string/detail_sample_year" />
 
-        <!-- TODO: add content description -->
         <ImageButton
             android:id="@+id/iv_favorite"
             android:layout_width="wrap_content"
@@ -71,6 +69,7 @@
             android:onClick="onFavorite"
             android:scaleType="centerInside"
             android:src="@drawable/icon_favorite"
+            android:contentDescription="@string/favorite_button_description"
             app:layout_constraintBottom_toBottomOf="@id/tv_detail_rating"
             app:layout_constraintHorizontal_bias="1.0"
             app:layout_constraintStart_toEndOf="@id/tv_detail_rating"

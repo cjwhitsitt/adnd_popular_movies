@@ -34,7 +34,6 @@
             android:paddingStart="20dp"
             android:paddingEnd="20dp">
 
-            <!-- TODO: The image is too big on tablets -->
             <ImageView
                 android:id="@+id/iv_detail_poster"
                 android:layout_width="0dp"
@@ -67,6 +66,7 @@
                 android:src="@drawable/icon_favorite"
                 android:background="@android:color/transparent"
                 android:onClick="onFavorite"
+                android:contentDescription="@string/favorite_button_description"
                 app:layout_constraintStart_toEndOf="@id/tv_detail_year"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="1.0"

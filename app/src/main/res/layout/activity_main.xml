@@ -6,23 +6,31 @@
     tools:context=".MainActivity">
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/rv_movies"
+        android:id="@+id/recycler_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 
     <ProgressBar
-        android:id="@+id/pb_main_loading_spinner"
+        android:id="@+id/pb_loading_spinner"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center" />
 
     <ImageView
-        android:id="@+id/iv_main_error"
+        android:id="@+id/iv_error"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:visibility="gone"
         android:src="@drawable/ic_error_cloud"
         android:contentDescription="@string/error_image_description" />
+
+    <TextView
+        android:id="@+id/tv_no_content"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:visibility="gone"
+        tools:text="@string/no_content_sample"/>
 
 </merge>

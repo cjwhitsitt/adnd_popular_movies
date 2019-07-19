@@ -11,7 +11,10 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.ProgressBar;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import com.jaywhitsitt.popularmovies.data.Video;
 import com.jaywhitsitt.popularmovies.utilities.MovieJsonUtils;
@@ -29,14 +32,19 @@ public class TrailersActivity extends AppCompatActivity implements VideoOnClickH
     private ProgressBar mLoadingSpinner;
     private RecyclerView mRecyclerView;
     private VideoAdapter mAdapter;
+    private TextView mNoContentTextView;
+    private ImageView mErrorImageView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        mLoadingSpinner = findViewById(R.id.pb_main_loading_spinner);
-        mRecyclerView = findViewById(R.id.rv_movies);
+        mLoadingSpinner = findViewById(R.id.pb_loading_spinner);
+        mRecyclerView = findViewById(R.id.recycler_view);
+        mNoContentTextView = findViewById(R.id.tv_no_content);
+        mNoContentTextView.setText(R.string.no_trailers_available);
+        mErrorImageView = findViewById(R.id.iv_error);
 
         LinearLayoutManager layoutManager = new LinearLayoutManager(
                 this,
@@ -74,11 +82,7 @@ public class TrailersActivity extends AppCompatActivity implements VideoOnClickH
     }
 
     private void showError() {
-        // TODO:
-    }
-
-    private void showToastError() {
-        // TODO:
+        mErrorImageView.setVisibility(View.VISIBLE);
     }
 
     @Override
@@ -89,7 +93,8 @@ public class TrailersActivity extends AppCompatActivity implements VideoOnClickH
             startActivity(intent);
         } else {
             Log.w(TAG, "Unhandled video site: " + video.site.getId());
-            showToastError();
+            Toast.makeText(this, R.string.trailer_open_error, Toast.LENGTH_SHORT)
+                    .show();
         }
     }
 
@@ -100,6 +105,8 @@ public class TrailersActivity extends AppCompatActivity implements VideoOnClickH
         @Override
         protected void onPreExecute() {
             mLoadingSpinner.setVisibility(View.VISIBLE);
+            mNoContentTextView.setVisibility(View.GONE);
+            mErrorImageView.setVisibility(View.GONE);
         }
 
         @Override
@@ -126,7 +133,7 @@ public class TrailersActivity extends AppCompatActivity implements VideoOnClickH
             if (videos == null) {
                 showError();
             } else if (videos.length == 0) {
-                // TODO: Show no videos available
+                mNoContentTextView.setVisibility(View.VISIBLE);
             }
 
             mAdapter.setData(videos);

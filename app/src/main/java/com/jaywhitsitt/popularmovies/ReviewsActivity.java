@@ -9,7 +9,9 @@ import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 
 import com.jaywhitsitt.popularmovies.data.Review;
 import com.jaywhitsitt.popularmovies.utilities.MovieJsonUtils;
@@ -24,15 +26,20 @@ public class ReviewsActivity extends AppCompatActivity {
     private ProgressBar mLoadingSpinner;
     private RecyclerView mRecyclerView;
     private ReviewAdapter mReviewAdapter;
+    private TextView mNoReviewsTextView;
+    private ImageView mErrorImageView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_reviews);
+        setContentView(R.layout.activity_main);
 
-        mLoadingSpinner = findViewById(R.id.pb_review_loading_spinner);
+        mLoadingSpinner = findViewById(R.id.pb_loading_spinner);
+        mNoReviewsTextView = findViewById(R.id.tv_no_content);
+        mNoReviewsTextView.setText(R.string.no_reviews_available);
+        mErrorImageView = findViewById(R.id.iv_error);
 
-        mRecyclerView = findViewById(R.id.rv_reviews);
+        mRecyclerView = findViewById(R.id.recycler_view);
         LinearLayoutManager layoutManager = new LinearLayoutManager(
                 this,
                 RecyclerView.VERTICAL,
@@ -47,7 +54,7 @@ public class ReviewsActivity extends AppCompatActivity {
         Intent intent = getIntent();
         if (intent.hasExtra(Intent.EXTRA_UID)) {
             mMovieId = intent.getIntExtra(Intent.EXTRA_UID, 0);
-            loadData(mMovieId);
+            loadData();
         }
         if (mMovieId == 0) {
             showError();
@@ -62,12 +69,12 @@ public class ReviewsActivity extends AppCompatActivity {
         setTitle(title);
     }
 
-    private void loadData(int id) {
+    private void loadData() {
         new FetchReviewsTask().execute();
     }
 
     private void showError() {
-        // TODO:
+        mErrorImageView.setVisibility(View.VISIBLE);
     }
 
     public class FetchReviewsTask extends AsyncTask<Void, Void, Review[]> {
@@ -75,6 +82,7 @@ public class ReviewsActivity extends AppCompatActivity {
         @Override
         protected void onPreExecute() {
             mLoadingSpinner.setVisibility(View.VISIBLE);
+            mErrorImageView.setVisibility(View.GONE);
         }
 
         @Override
@@ -93,7 +101,7 @@ public class ReviewsActivity extends AppCompatActivity {
             if (reviews == null) {
                 showError();
             } else if (reviews.length == 0) {
-                // TODO: Show no reviews available
+                mNoReviewsTextView.setVisibility(View.VISIBLE);
             }
 
             mReviewAdapter.setData(reviews);

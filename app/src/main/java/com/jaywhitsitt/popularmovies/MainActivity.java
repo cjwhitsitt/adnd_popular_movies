@@ -11,9 +11,7 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.Observer;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-import androidx.room.Room;
 
-import android.provider.ContactsContract;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -23,7 +21,6 @@ import android.widget.ProgressBar;
 
 import com.jaywhitsitt.popularmovies.data.Database;
 import com.jaywhitsitt.popularmovies.data.MovieBase;
-import com.jaywhitsitt.popularmovies.data.MovieBaseDao;
 import com.jaywhitsitt.popularmovies.utilities.MovieJsonUtils;
 import com.jaywhitsitt.popularmovies.utilities.NetworkUtils;
 
@@ -51,9 +48,9 @@ public class MainActivity extends AppCompatActivity implements MovieOnClickHandl
 
         getSupportActionBar().setTitle(R.string.main_title);
 
-        mRecyclerView = findViewById(R.id.rv_movies);
-        mLoadingSpinner = findViewById(R.id.pb_main_loading_spinner);
-        mErrorImageView = findViewById(R.id.iv_main_error);
+        mRecyclerView = findViewById(R.id.recycler_view);
+        mLoadingSpinner = findViewById(R.id.pb_loading_spinner);
+        mErrorImageView = findViewById(R.id.iv_error);
 
         GridLayoutManager layoutManager = new GridLayoutManager(this, 2);
         mRecyclerView.setLayoutManager(layoutManager);

@@ -8,10 +8,13 @@
 
     <string name="detail_label_reviews">Reviews</string>
     <string name="reviews_title_format">Reviews of %1$s</string>
+    <string name="no_reviews_available">No reviews available</string>
+    <string name="review_author_title">Author:</string>
+
     <string name="detail_label_trailers">Trailers</string>
     <string name="trailers_title_format">Trailers of %1$s</string>
-
-    <string name="review_author_title">Author:</string>
+    <string name="no_trailers_available">No Trailers Available</string>
+    <string name="trailer_open_error">There was an error opening that trailer</string>
 
     <plurals name="minutes_short">
         <item quantity="one">%d min</item>

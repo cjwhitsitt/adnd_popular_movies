@@ -119,19 +119,18 @@ public class MovieJsonUtils {
         return videos;
     }
 
-    public static Review[] reviewsFromJson(String jsonString) {
-        Review[] reviews = null;
+    public static List<Review> reviewsFromJson(String jsonString) {
+        List<Review> reviews = null;
 
         try {
             JSONObject json = new JSONObject(jsonString);
             JSONArray results = json.getJSONArray(RESULTS_KEY);
-            reviews = new Review[results.length()];
 
             for (int i = 0; i < results.length(); i++) {
                 JSONObject obj = results.getJSONObject(i);
                 String author = obj.getString(AUTHOR_KEY);
                 String content = obj.getString(CONTENT_KEY);
-                reviews[i] = new Review(author, content);
+                reviews.add(new Review(author, content));
             }
         } catch (JSONException e) {
             e.printStackTrace();

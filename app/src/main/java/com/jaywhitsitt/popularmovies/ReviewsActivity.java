@@ -18,6 +18,7 @@ import com.jaywhitsitt.popularmovies.utilities.MovieJsonUtils;
 import com.jaywhitsitt.popularmovies.utilities.NetworkUtils;
 
 import java.io.IOException;
+import java.util.List;
 
 public class ReviewsActivity extends AppCompatActivity {
 
@@ -77,7 +78,7 @@ public class ReviewsActivity extends AppCompatActivity {
         mErrorImageView.setVisibility(View.VISIBLE);
     }
 
-    public class FetchReviewsTask extends AsyncTask<Void, Void, Review[]> {
+    public class FetchReviewsTask extends AsyncTask<Void, Void, List<Review>> {
 
         @Override
         protected void onPreExecute() {
@@ -86,7 +87,7 @@ public class ReviewsActivity extends AppCompatActivity {
         }
 
         @Override
-        protected Review[] doInBackground(Void... voids) {
+        protected List<Review> doInBackground(Void... voids) {
             try {
                 String response = NetworkUtils.getResponseFromHttpUrl(NetworkUtils.urlForReview(mMovieId));
                 return MovieJsonUtils.reviewsFromJson(response);
@@ -97,10 +98,10 @@ public class ReviewsActivity extends AppCompatActivity {
         }
 
         @Override
-        protected void onPostExecute(Review[] reviews) {
+        protected void onPostExecute(List<Review> reviews) {
             if (reviews == null) {
                 showError();
-            } else if (reviews.length == 0) {
+            } else if (reviews.size() == 0) {
                 mNoReviewsTextView.setVisibility(View.VISIBLE);
             }
 

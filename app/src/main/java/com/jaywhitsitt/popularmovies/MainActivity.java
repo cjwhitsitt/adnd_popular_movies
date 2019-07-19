@@ -138,7 +138,7 @@ public class MainActivity extends AppCompatActivity implements MovieOnClickHandl
         protected void onPostExecute(List<MovieBase> movies) {
             if (movies == null) {
                 showError();
-            }
+            } // TODO: if 0, show no content
             mMovieAdapter.setData(movies);
             mLoadingSpinner.setVisibility(View.GONE);
             mRecyclerView.scrollToPosition(0);

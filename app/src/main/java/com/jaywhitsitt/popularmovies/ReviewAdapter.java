@@ -9,18 +9,20 @@ import android.widget.TextView;
 
 import com.jaywhitsitt.popularmovies.data.Review;
 
+import java.util.List;
+
 public class ReviewAdapter extends RecyclerView.Adapter<ReviewAdapter.ReviewViewHolder> {
 
-    private Review[] mReviews;
+    private List<Review> mReviews;
 
-    public void setData(Review[] reviews) {
+    public void setData(List<Review> reviews) {
         mReviews = reviews;
         notifyDataSetChanged();
     }
 
     @Override
     public int getItemCount() {
-        return mReviews == null ? 0 : mReviews.length;
+        return mReviews == null ? 0 : mReviews.size();
     }
 
     @NonNull
@@ -33,7 +35,7 @@ public class ReviewAdapter extends RecyclerView.Adapter<ReviewAdapter.ReviewView
 
     @Override
     public void onBindViewHolder(@NonNull ReviewViewHolder holder, int position) {
-        Review review = mReviews[position];
+        Review review = mReviews.get(position);
         holder.mAuthorTextView.setText(review.author);
         holder.mContentTextView.setText(review.content);
     }

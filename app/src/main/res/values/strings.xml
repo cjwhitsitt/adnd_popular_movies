@@ -4,6 +4,12 @@
     <string name="loading_value">…</string>
     <string name="popular_menu_title">Popular</string>
     <string name="top_rated_menu_title">Top Rated</string>
+    <string name="favorites_menu_title">Favorites</string>
+
+    <string name="detail_label_reviews">Reviews</string>
+    <string name="detail_label_trailers">Trailers</string>
+
+    <string name="review_author_title">Author:</string>
 
     <plurals name="minutes_short">
         <item quantity="one">%d min</item>
@@ -13,6 +19,4 @@
     <!-- Accessibility -->
     <string name="error_image_description">Error occurred</string>
     <string name="movie_poster_image_description">Movie poster</string>
-    <string name="detail_label_trailers">Trailers</string>
-    <string name="review_author_title">Author:</string>
 </resources>

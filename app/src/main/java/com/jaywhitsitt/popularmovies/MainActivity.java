@@ -6,8 +6,14 @@ import android.graphics.Point;
 import android.os.AsyncTask;
 import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
+
+import androidx.lifecycle.LiveData;
+import androidx.lifecycle.Observer;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.room.Room;
+
+import android.provider.ContactsContract;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -15,12 +21,15 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 
+import com.jaywhitsitt.popularmovies.data.Database;
 import com.jaywhitsitt.popularmovies.data.MovieBase;
+import com.jaywhitsitt.popularmovies.data.MovieBaseDao;
 import com.jaywhitsitt.popularmovies.utilities.MovieJsonUtils;
 import com.jaywhitsitt.popularmovies.utilities.NetworkUtils;
 
 import java.io.IOException;
 import java.net.URL;
+import java.util.List;
 
 public class MainActivity extends AppCompatActivity implements MovieOnClickHandler {
 
@@ -29,8 +38,11 @@ public class MainActivity extends AppCompatActivity implements MovieOnClickHandl
     ImageView mErrorImageView;
     MovieAdapter mMovieAdapter;
 
+    LiveData<List<MovieBase>> mFavoriteMovies;
+
     private static final String SORT_BY_POPULAR = "POPULAR";
     private static final String SORT_BY_TOP_RATED = "TOP_RATED";
+    private static final String SORT_BY_FAVORITES = "FAVORITES";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,6 +68,24 @@ public class MainActivity extends AppCompatActivity implements MovieOnClickHandl
     }
 
     private void loadData(String sortSelection) {
+        if (sortSelection.equals(SORT_BY_FAVORITES)) {
+            if (mFavoriteMovies == null) {
+                mFavoriteMovies = Database.databaseInstance(this).movieBaseDao().getFavoriteMovies();
+            }
+            mFavoriteMovies.observe(this, new Observer<List<MovieBase>>() {
+                @Override
+                public void onChanged(List<MovieBase> movieBases) {
+                    // TODO: use List<>
+                    mMovieAdapter.setData(movieBases.toArray(new MovieBase[0]));
+                    mRecyclerView.scrollToPosition(0);
+                }
+            });
+            return;
+        }
+
+        if (mFavoriteMovies != null) {
+            mFavoriteMovies.removeObservers(this);
+        }
         new FetchMoviesTask().execute(sortSelection);
     }
 
@@ -133,6 +163,10 @@ public class MainActivity extends AppCompatActivity implements MovieOnClickHandl
         }
         if (item.getItemId() == R.id.action_sort_top_rated) {
             loadData(SORT_BY_TOP_RATED);
+            return true;
+        }
+        if (item.getItemId() == R.id.action_sort_favorites) {
+            loadData(SORT_BY_FAVORITES);
             return true;
         }
         return super.onOptionsItemSelected(item);

@@ -18,6 +18,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 
 import com.jaywhitsitt.popularmovies.database.Database;
 import com.jaywhitsitt.popularmovies.data.MovieBase;
@@ -30,10 +31,11 @@ import java.util.List;
 
 public class MainActivity extends AppCompatActivity implements MovieOnClickHandler {
 
-    RecyclerView mRecyclerView;
-    ProgressBar mLoadingSpinner;
-    ImageView mErrorImageView;
-    MovieAdapter mMovieAdapter;
+    private RecyclerView mRecyclerView;
+    private ProgressBar mLoadingSpinner;
+    private ImageView mErrorImageView;
+    private MovieAdapter mMovieAdapter;
+    private TextView mNoContentTextView;
 
     LiveData<List<MovieBase>> mFavoriteMovies;
 
@@ -51,6 +53,8 @@ public class MainActivity extends AppCompatActivity implements MovieOnClickHandl
         mRecyclerView = findViewById(R.id.recycler_view);
         mLoadingSpinner = findViewById(R.id.pb_loading_spinner);
         mErrorImageView = findViewById(R.id.iv_error);
+        mNoContentTextView = findViewById(R.id.tv_no_content);
+        mNoContentTextView.setText(R.string.no_movies_available);
 
         GridLayoutManager layoutManager = new GridLayoutManager(this, 2);
         mRecyclerView.setLayoutManager(layoutManager);
@@ -72,9 +76,9 @@ public class MainActivity extends AppCompatActivity implements MovieOnClickHandl
             mFavoriteMovies.observe(this, new Observer<List<MovieBase>>() {
                 @Override
                 public void onChanged(List<MovieBase> movieBases) {
-                    // TODO: use List<>
                     mMovieAdapter.setData(movieBases);
                     mRecyclerView.scrollToPosition(0);
+                    mNoContentTextView.setVisibility(movieBases.size() == 0 ? View.VISIBLE : View.GONE);
                 }
             });
             return;
@@ -107,6 +111,7 @@ public class MainActivity extends AppCompatActivity implements MovieOnClickHandl
         protected void onPreExecute() {
             mLoadingSpinner.setVisibility(View.VISIBLE);
             mErrorImageView.setVisibility(View.GONE);
+            mNoContentTextView.setVisibility(View.GONE);
         }
 
         @Override
@@ -138,7 +143,9 @@ public class MainActivity extends AppCompatActivity implements MovieOnClickHandl
         protected void onPostExecute(List<MovieBase> movies) {
             if (movies == null) {
                 showError();
-            } // TODO: if 0, show no content
+            } else if (movies.size() == 0) {
+                mNoContentTextView.setVisibility(View.VISIBLE);
+            }
             mMovieAdapter.setData(movies);
             mLoadingSpinner.setVisibility(View.GONE);
             mRecyclerView.scrollToPosition(0);

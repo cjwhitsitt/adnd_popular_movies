@@ -5,6 +5,7 @@
     <string name="popular_menu_title">Popular</string>
     <string name="top_rated_menu_title">Top Rated</string>
     <string name="favorites_menu_title">Favorites</string>
+    <string name="no_movies_available">No movies for that category available</string>
 
     <string name="detail_label_reviews">Reviews</string>
     <string name="reviews_title_format">Reviews of %1$s</string>

@@ -38,6 +38,7 @@ public class ReviewsActivity extends AppCompatActivity {
         mRecyclerView.setLayoutManager(layoutManager);
         mReviewAdapter = new ReviewAdapter();
         mRecyclerView.setAdapter(mReviewAdapter);
+        // TODO: DividerItemDecoration
 
         Intent intent = getIntent();
         if (intent.hasExtra(Intent.EXTRA_UID)) {

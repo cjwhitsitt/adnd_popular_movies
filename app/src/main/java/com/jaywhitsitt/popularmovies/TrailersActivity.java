@@ -44,6 +44,7 @@ public class TrailersActivity extends AppCompatActivity implements VideoOnClickH
         mRecyclerView.setHasFixedSize(true);
         mAdapter = new VideoAdapter(this);
         mRecyclerView.setAdapter(mAdapter);
+        // TODO: DividerItemDecoration
 
         Intent intent = getIntent();
         if (intent.hasExtra(Intent.EXTRA_UID)) {

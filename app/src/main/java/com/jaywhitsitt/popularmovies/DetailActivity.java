@@ -4,6 +4,8 @@ import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.AsyncTask;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.LiveData;
+import androidx.lifecycle.Observer;
 import androidx.room.Room;
 
 import android.os.Bundle;
@@ -26,6 +28,7 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
+import java.util.List;
 
 public class DetailActivity extends AppCompatActivity {
 
@@ -69,6 +72,21 @@ public class DetailActivity extends AppCompatActivity {
         } else {
             showError();
         }
+
+        MovieBaseDao dao = Database.databaseInstance(this).movieBaseDao();
+        final LiveData<List<MovieBase>> favorites = dao.getFavoriteMovies();
+        favorites.observe(this, new Observer<List<MovieBase>>() {
+            @Override
+            public void onChanged(List<MovieBase> movieBases) {
+                for (MovieBase movie: movieBases) {
+                    if (movie.id == mMovieId) {
+                        mFavoriteButton.setSelected(true);
+                        return;
+                    }
+                }
+                mFavoriteButton.setSelected(false);
+            }
+        });
     }
 
     private void loadData(int id) {
@@ -102,7 +120,20 @@ public class DetailActivity extends AppCompatActivity {
     public void onFavorite(View view) {
         ImageButton button = (ImageButton) view;
         button.setSelected(!button.isSelected());
-        updateSavedFavoriteValue(button.isSelected());
+
+        final boolean isFavorite = button.isSelected();
+        final MovieBaseDao dao = Database.databaseInstance(this).movieBaseDao();
+        Thread thread = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                if (isFavorite) {
+                    dao.addFavoriteMovies(mDisplayedMovie);
+                } else {
+                    dao.removeFavoriteMovies(mDisplayedMovie);
+                }
+            }
+        });
+        thread.start();
     }
 
     @SuppressLint("SetTextI18n") // Rating shouldn't be internationalized
@@ -139,27 +170,6 @@ public class DetailActivity extends AppCompatActivity {
         mSynopsisTextView.setText(movie.synopsis);
 
         mDisplayedMovie = movie;
-        updateFavoriteIndicator();
-    }
-
-    private void updateFavoriteIndicator() {
-        MovieBaseDao dao = Database.databaseInstance(this).movieBaseDao();
-        for (MovieBase favorite: dao.getFavoriteMovies()) {
-            if (favorite.id == mDisplayedMovie.id) {
-                mFavoriteButton.setSelected(true);
-                return;
-            }
-        }
-        mFavoriteButton.setSelected(false);
-    }
-
-    private void updateSavedFavoriteValue(boolean isFavorite) {
-        MovieBaseDao dao = Database.databaseInstance(this).movieBaseDao();
-        if (isFavorite) {
-            dao.addFavoriteMovies(mDisplayedMovie);
-        } else {
-            dao.removeFavoriteMovies(mDisplayedMovie);
-        }
     }
 
     @SuppressLint("StaticFieldLeak")

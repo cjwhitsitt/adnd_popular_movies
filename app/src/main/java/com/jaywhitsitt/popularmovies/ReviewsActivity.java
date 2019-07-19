@@ -53,10 +53,11 @@ public class ReviewsActivity extends AppCompatActivity {
             showError();
         }
 
-        // TODO: localize
-        String title = "Reviews";
+        String title;
         if (intent.hasExtra(Intent.EXTRA_TITLE)) {
-            title += " of " + intent.getStringExtra(Intent.EXTRA_TITLE);
+            title = getString(R.string.reviews_title_format, intent.getStringExtra(Intent.EXTRA_TITLE));
+        } else {
+            title = getString(R.string.detail_label_reviews);
         }
         setTitle(title);
     }

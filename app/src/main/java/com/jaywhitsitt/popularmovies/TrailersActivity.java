@@ -60,10 +60,11 @@ public class TrailersActivity extends AppCompatActivity implements VideoOnClickH
             showError();
         }
 
-        // TODO: localize
-        String title = "Videos";
+        String title;
         if (intent.hasExtra(Intent.EXTRA_TITLE)) {
-            title += " of " + intent.getStringExtra(Intent.EXTRA_TITLE);
+            title = getString(R.string.trailers_title_format, intent.getStringExtra(Intent.EXTRA_TITLE));
+        } else {
+            title = getString(R.string.detail_label_trailers);
         }
         setTitle(title);
     }

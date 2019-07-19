@@ -5,6 +5,8 @@ import android.net.Uri;
 import android.os.AsyncTask;
 import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
+
+import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import android.util.Log;
@@ -44,7 +46,10 @@ public class TrailersActivity extends AppCompatActivity implements VideoOnClickH
         mRecyclerView.setHasFixedSize(true);
         mAdapter = new VideoAdapter(this);
         mRecyclerView.setAdapter(mAdapter);
-        // TODO: DividerItemDecoration
+
+        mRecyclerView.addItemDecoration(new DividerItemDecoration(
+                this,
+                layoutManager.getOrientation()));
 
         Intent intent = getIntent();
         if (intent.hasExtra(Intent.EXTRA_UID)) {

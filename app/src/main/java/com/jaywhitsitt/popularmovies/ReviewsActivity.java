@@ -4,6 +4,8 @@ import android.content.Intent;
 import android.os.AsyncTask;
 import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
+
+import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import android.view.View;
@@ -38,7 +40,9 @@ public class ReviewsActivity extends AppCompatActivity {
         mRecyclerView.setLayoutManager(layoutManager);
         mReviewAdapter = new ReviewAdapter();
         mRecyclerView.setAdapter(mReviewAdapter);
-        // TODO: DividerItemDecoration
+        mRecyclerView.addItemDecoration(new DividerItemDecoration(
+                this,
+                layoutManager.getOrientation()));
 
         Intent intent = getIntent();
         if (intent.hasExtra(Intent.EXTRA_UID)) {

@@ -11,6 +11,7 @@ import org.json.JSONObject;
 
 import java.sql.Date;
 import java.util.ArrayList;
+import java.util.List;
 
 public class MovieJsonUtils {
 
@@ -28,19 +29,18 @@ public class MovieJsonUtils {
     private static final String AUTHOR_KEY = "author";
     private static final String CONTENT_KEY = "content";
 
-    public static MovieBase[] moviesFromJson(String string) {
-        MovieBase[] movies = null;
+    public static List<MovieBase> moviesFromJson(String string) {
+        List<MovieBase> movies = new ArrayList<>();
 
         try {
             JSONObject json = new JSONObject(string);
             JSONArray results = json.getJSONArray(RESULTS_KEY);
-            movies = new MovieBase[results.length()];
 
             for (int i = 0; i < results.length(); i++) {
                 int id = results.getJSONObject(i).getInt(ID_KEY);
                 String title = results.getJSONObject(i).getString(TITLE_KEY);
                 String posterPath = results.getJSONObject(i).getString(POSTER_PATH_KEY);
-                movies[i] = new MovieBase(id, title, posterPath);
+                movies.add(new MovieBase(id, title, posterPath));
             }
 
         } catch (JSONException e) {

@@ -14,13 +14,15 @@ import com.jaywhitsitt.popularmovies.utilities.NetworkUtils;
 import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
 
+import java.util.List;
+
 interface MovieOnClickHandler {
     void onClick(MovieBase movie);
 }
 
 public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieAdapterViewHolder> {
 
-    private MovieBase[] mMovies;
+    private List<MovieBase> mMovies;
     final private MovieOnClickHandler mOnClickHandler;
     final private int mExpectedItemWidth;
 
@@ -29,7 +31,7 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieAdapter
         mExpectedItemWidth = expectedItemWidth;
     }
 
-    public void setData(MovieBase[] movies) {
+    public void setData(List<MovieBase> movies) {
         mMovies = movies;
         notifyDataSetChanged();
     }
@@ -47,7 +49,7 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieAdapter
     public void onBindViewHolder(@NonNull MovieAdapterViewHolder movieAdapterViewHolder, int i) {
         ImageView imageView = movieAdapterViewHolder.mImageView;
         final ProgressBar loadingSpinner = movieAdapterViewHolder.mLoadingSpinner;
-        MovieBase movie = mMovies[i];
+        MovieBase movie = mMovies.get(i);
 
         imageView.setImageDrawable(null);
         loadingSpinner.setVisibility(View.VISIBLE);
@@ -67,7 +69,7 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieAdapter
 
     @Override
     public int getItemCount() {
-        return mMovies == null ? 0 : mMovies.length;
+        return mMovies == null ? 0 : mMovies.size();
     }
 
     public class MovieAdapterViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
@@ -84,8 +86,7 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieAdapter
 
         @Override
         public void onClick(View v) {
-            int i = getAdapterPosition();
-            MovieBase movie = mMovies[i];
+            MovieBase movie = mMovies.get(getAdapterPosition());
             if (mOnClickHandler != null) {
                 mOnClickHandler.onClick(movie);
             }

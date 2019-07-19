@@ -73,7 +73,7 @@ public class MainActivity extends AppCompatActivity implements MovieOnClickHandl
                 @Override
                 public void onChanged(List<MovieBase> movieBases) {
                     // TODO: use List<>
-                    mMovieAdapter.setData(movieBases.toArray(new MovieBase[0]));
+                    mMovieAdapter.setData(movieBases);
                     mRecyclerView.scrollToPosition(0);
                 }
             });
@@ -99,7 +99,7 @@ public class MainActivity extends AppCompatActivity implements MovieOnClickHandl
     }
 
     @SuppressLint("StaticFieldLeak")
-    public class FetchMoviesTask extends AsyncTask<String, Void, MovieBase[]> {
+    public class FetchMoviesTask extends AsyncTask<String, Void, List<MovieBase>> {
 
         private final String TAG = FetchMoviesTask.class.getSimpleName();
 
@@ -110,7 +110,7 @@ public class MainActivity extends AppCompatActivity implements MovieOnClickHandl
         }
 
         @Override
-        protected MovieBase[] doInBackground(String... strings) {
+        protected List<MovieBase> doInBackground(String... strings) {
             String selection = strings.length > 0 && strings[0] != null ? strings[0] : SORT_BY_POPULAR;
 
             URL url;
@@ -135,7 +135,7 @@ public class MainActivity extends AppCompatActivity implements MovieOnClickHandl
         }
 
         @Override
-        protected void onPostExecute(MovieBase[] movies) {
+        protected void onPostExecute(List<MovieBase> movies) {
             if (movies == null) {
                 showError();
             }

@@ -4,6 +4,8 @@ import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.AsyncTask;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.room.Room;
+
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -12,6 +14,9 @@ import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import com.jaywhitsitt.popularmovies.data.Database;
+import com.jaywhitsitt.popularmovies.data.MovieBase;
+import com.jaywhitsitt.popularmovies.data.MovieBaseDao;
 import com.jaywhitsitt.popularmovies.data.MovieDetail;
 import com.jaywhitsitt.popularmovies.utilities.MovieJsonUtils;
 import com.jaywhitsitt.popularmovies.utilities.NetworkUtils;
@@ -26,8 +31,10 @@ public class DetailActivity extends AppCompatActivity {
 
     private int mMovieId;
     private String mMovieTitle;
+    private MovieDetail mDisplayedMovie;
 
     ImageView mImageView;
+    ImageButton mFavoriteButton;
     TextView mYearTextView;
     TextView mMonthDayTextView;
     TextView mLengthTextView;
@@ -41,6 +48,7 @@ public class DetailActivity extends AppCompatActivity {
         setContentView(R.layout.activity_detail);
 
         mImageView = findViewById(R.id.iv_detail_poster);
+        mFavoriteButton = findViewById(R.id.iv_favorite);
         mYearTextView = findViewById(R.id.tv_detail_year);
         mMonthDayTextView = findViewById(R.id.tv_detail_month_day);
         mLengthTextView = findViewById(R.id.tv_detail_length);
@@ -94,7 +102,7 @@ public class DetailActivity extends AppCompatActivity {
     public void onFavorite(View view) {
         ImageButton button = (ImageButton) view;
         button.setSelected(!button.isSelected());
-        // TODO: update DB
+        updateSavedFavoriteValue(button.isSelected());
     }
 
     @SuppressLint("SetTextI18n") // Rating shouldn't be internationalized
@@ -129,6 +137,29 @@ public class DetailActivity extends AppCompatActivity {
         mRatingTextView.setVisibility(
                 movie.rating == MovieDetail.INVALID_NUMERIC_VALUE ? View.GONE : View.VISIBLE);
         mSynopsisTextView.setText(movie.synopsis);
+
+        mDisplayedMovie = movie;
+        updateFavoriteIndicator();
+    }
+
+    private void updateFavoriteIndicator() {
+        MovieBaseDao dao = Database.databaseInstance(this).movieBaseDao();
+        for (MovieBase favorite: dao.getFavoriteMovies()) {
+            if (favorite.id == mDisplayedMovie.id) {
+                mFavoriteButton.setSelected(true);
+                return;
+            }
+        }
+        mFavoriteButton.setSelected(false);
+    }
+
+    private void updateSavedFavoriteValue(boolean isFavorite) {
+        MovieBaseDao dao = Database.databaseInstance(this).movieBaseDao();
+        if (isFavorite) {
+            dao.addFavoriteMovies(mDisplayedMovie);
+        } else {
+            dao.removeFavoriteMovies(mDisplayedMovie);
+        }
     }
 
     @SuppressLint("StaticFieldLeak")

@@ -22,6 +22,7 @@ import com.jaywhitsitt.popularmovies.utilities.NetworkUtils;
 
 import java.io.IOException;
 import java.net.URL;
+import java.util.List;
 
 public class TrailersActivity extends AppCompatActivity implements VideoOnClickHandler {
 
@@ -98,7 +99,7 @@ public class TrailersActivity extends AppCompatActivity implements VideoOnClickH
         }
     }
 
-    public class FetchVideosTask extends AsyncTask<Integer, Void, Video[]> {
+    public class FetchVideosTask extends AsyncTask<Integer, Void, List<Video>> {
 
         private final String TAG = FetchVideosTask.class.getSimpleName();
 
@@ -110,7 +111,7 @@ public class TrailersActivity extends AppCompatActivity implements VideoOnClickH
         }
 
         @Override
-        protected Video[] doInBackground(Integer... integers) {
+        protected List<Video> doInBackground(Integer... integers) {
             if (integers.length < 1 || integers[0] == null) {
                 return null;
             }
@@ -129,10 +130,10 @@ public class TrailersActivity extends AppCompatActivity implements VideoOnClickH
         }
 
         @Override
-        protected void onPostExecute(Video[] videos) {
+        protected void onPostExecute(List<Video> videos) {
             if (videos == null) {
                 showError();
-            } else if (videos.length == 0) {
+            } else if (videos.size() == 0) {
                 mNoContentTextView.setVisibility(View.VISIBLE);
             }
 

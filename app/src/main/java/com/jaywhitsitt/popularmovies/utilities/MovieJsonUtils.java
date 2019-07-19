@@ -93,13 +93,12 @@ public class MovieJsonUtils {
         return movie;
     }
 
-    public static Video[] videosFromJson(String jsonString) {
-        Video[] videos = null;
+    public static List<Video> videosFromJson(String jsonString) {
+        List<Video> videos = new ArrayList<>();
 
         try {
             JSONObject json = new JSONObject(jsonString);
             JSONArray results = json.getJSONArray(RESULTS_KEY);
-            videos = new Video[results.length()];
 
             for (int i = 0; i < results.length(); i++) {
                 JSONObject obj = results.getJSONObject(i);
@@ -110,7 +109,7 @@ public class MovieJsonUtils {
                 String siteString = obj.getString(SITE_KEY);
                 Video.Site site = Video.Site.get(siteString);
 
-                videos[i] = new Video(id, title, site, key);
+                videos.add(new Video(id, title, site, key));
             }
 
         } catch (JSONException e) {

@@ -9,27 +9,29 @@ import android.widget.TextView;
 
 import com.jaywhitsitt.popularmovies.data.Video;
 
+import java.util.List;
+
 interface VideoOnClickHandler {
     void onClick(Video video);
 }
 
 public class VideoAdapter extends RecyclerView.Adapter<VideoAdapter.VideoAdapterViewHolder> {
 
-    private Video[] mVideos;
+    private List<Video> mVideos;
     final private VideoOnClickHandler mOnClickHandler;
 
     public VideoAdapter(VideoOnClickHandler onClickHandler) {
         mOnClickHandler = onClickHandler;
     }
 
-    public void setData(Video[] videos) {
+    public void setData(List<Video> videos) {
         mVideos = videos;
         notifyDataSetChanged();
     }
 
     @Override
     public int getItemCount() {
-        return mVideos == null ? 0 : mVideos.length;
+        return mVideos == null ? 0 : mVideos.size();
     }
 
     @NonNull
@@ -43,7 +45,7 @@ public class VideoAdapter extends RecyclerView.Adapter<VideoAdapter.VideoAdapter
     @Override
     public void onBindViewHolder(@NonNull VideoAdapterViewHolder viewHolder, int i) {
         String title;
-        Video video = mVideos[i];
+        Video video = mVideos.get(i);
         if (video != null && video.title != null) {
             title = video.title;
         } else {
@@ -65,7 +67,7 @@ public class VideoAdapter extends RecyclerView.Adapter<VideoAdapter.VideoAdapter
         @Override
         public void onClick(View v) {
             int position = getAdapterPosition();
-            Video video = mVideos[position];
+            Video video = mVideos.get(position);
             mOnClickHandler.onClick(video);
         }
     }

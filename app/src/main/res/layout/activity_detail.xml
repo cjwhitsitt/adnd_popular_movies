@@ -56,9 +56,22 @@
                 android:text="@string/loading_value"
                 tools:text="@string/detail_sample_year"
                 android:textSize="32sp"
-                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/iv_detail_poster"
                 app:layout_constraintTop_toTopOf="parent" />
+
+            <ImageButton
+                android:id="@+id/iv_favorite"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:scaleType="centerInside"
+                android:src="@drawable/icon_favorite"
+                android:background="@android:color/transparent"
+                android:onClick="onFavorite"
+                app:layout_constraintStart_toEndOf="@id/tv_detail_year"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="1.0"
+                app:layout_constraintTop_toTopOf="@id/tv_detail_year"
+                app:layout_constraintBottom_toBottomOf="@id/tv_detail_year" />
 
             <TextView
                 android:id="@+id/tv_detail_month_day"

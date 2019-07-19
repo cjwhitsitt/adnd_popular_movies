@@ -7,6 +7,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -88,6 +89,12 @@ public class DetailActivity extends AppCompatActivity {
         intent.putExtra(Intent.EXTRA_UID, mMovieId);
         intent.putExtra(Intent.EXTRA_TITLE, mMovieTitle);
         startActivity(intent);
+    }
+
+    public void onFavorite(View view) {
+        ImageButton button = (ImageButton) view;
+        button.setSelected(!button.isSelected());
+        // TODO: update DB
     }
 
     @SuppressLint("SetTextI18n") // Rating shouldn't be internationalized

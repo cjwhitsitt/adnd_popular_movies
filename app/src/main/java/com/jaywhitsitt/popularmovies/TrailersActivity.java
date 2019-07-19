@@ -40,7 +40,7 @@ public class TrailersActivity extends AppCompatActivity implements VideoOnClickH
 
         LinearLayoutManager layoutManager = new LinearLayoutManager(
                 this,
-                LinearLayoutManager.VERTICAL,
+                RecyclerView.VERTICAL,
                 false);
         mRecyclerView.setLayoutManager(layoutManager);
         mRecyclerView.setHasFixedSize(true);

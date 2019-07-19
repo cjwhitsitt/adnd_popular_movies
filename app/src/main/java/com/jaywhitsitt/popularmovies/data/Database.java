@@ -7,7 +7,8 @@ import androidx.room.RoomDatabase;
 
 @androidx.room.Database(
         entities = {MovieBase.class},
-        version = 1
+        version = 1,
+        exportSchema = false
 )
 public abstract class Database extends RoomDatabase {
     private static Database db;

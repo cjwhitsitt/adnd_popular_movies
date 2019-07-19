@@ -120,7 +120,7 @@ public class MovieJsonUtils {
     }
 
     public static List<Review> reviewsFromJson(String jsonString) {
-        List<Review> reviews = null;
+        List<Review> reviews = new ArrayList<>();
 
         try {
             JSONObject json = new JSONObject(jsonString);

@@ -2,10 +2,10 @@ package com.jaywhitsitt.popularmovies;
 
 import android.content.Intent;
 import android.os.AsyncTask;
-import android.support.v7.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 import android.view.View;
 import android.widget.ProgressBar;
 
@@ -33,7 +33,7 @@ public class ReviewsActivity extends AppCompatActivity {
         mRecyclerView = findViewById(R.id.rv_reviews);
         LinearLayoutManager layoutManager = new LinearLayoutManager(
                 this,
-                LinearLayoutManager.VERTICAL,
+                RecyclerView.VERTICAL,
                 false);
         mRecyclerView.setLayoutManager(layoutManager);
         mReviewAdapter = new ReviewAdapter();

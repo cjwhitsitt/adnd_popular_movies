@@ -1,9 +1,11 @@
-package com.jaywhitsitt.popularmovies.data;
+package com.jaywhitsitt.popularmovies.database;
 
 import android.content.Context;
 
 import androidx.room.Room;
 import androidx.room.RoomDatabase;
+
+import com.jaywhitsitt.popularmovies.data.MovieBase;
 
 @androidx.room.Database(
         entities = {MovieBase.class},

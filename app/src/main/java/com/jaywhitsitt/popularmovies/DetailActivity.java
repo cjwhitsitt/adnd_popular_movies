@@ -6,7 +6,6 @@ import android.os.AsyncTask;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.Observer;
-import androidx.room.Room;
 
 import android.os.Bundle;
 import android.util.Log;
@@ -16,9 +15,9 @@ import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
-import com.jaywhitsitt.popularmovies.data.Database;
+import com.jaywhitsitt.popularmovies.database.Database;
 import com.jaywhitsitt.popularmovies.data.MovieBase;
-import com.jaywhitsitt.popularmovies.data.MovieBaseDao;
+import com.jaywhitsitt.popularmovies.database.MovieBaseDao;
 import com.jaywhitsitt.popularmovies.data.MovieDetail;
 import com.jaywhitsitt.popularmovies.utilities.MovieJsonUtils;
 import com.jaywhitsitt.popularmovies.utilities.NetworkUtils;
